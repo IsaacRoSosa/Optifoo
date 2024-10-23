@@ -38,7 +38,7 @@ export default function AuthPage() {
               <h2 className={styles.headingSecondary3}>NEW HERE?</h2>
               <p className={styles.create}>Create an account to keep track of your applications</p>
 
-              <Image className={styles.logo} src="/Images/Jobmiga_Sign.png" width={250} height={250} alt="Jobhill logo" />
+              <Image className={styles.logo} src="/Images/2eggs.webp" width={220} height={220} alt="Jobhill logo" />
 
               <button type="button" onClick={handleToggle} className={styles.signinBtn}>Sign Up</button>
             </div>
@@ -48,7 +48,7 @@ export default function AuthPage() {
             <div className={styles.leftPanel2}>
               <h2 className={styles.headingPrimary2}>ALREADY A USER?</h2>
               <p className={styles.create2}>Log back, to see your applications</p>
-              <Image className={styles.logo} src="/Images/Jobmiga_Log.png" width={280} height={280} alt="Jobhill logo" />
+              <Image className={styles.logo} src="/Images/egg1.webp" width={180} height={180} alt="Jobhill logo" />
 
               <button type="button" onClick={handleToggle} className={styles.loginBtn2}>Log In</button>
             </div>
@@ -89,7 +89,7 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <button type="button" className={styles.loginBtn}>Create Account</button>
+                <button type="button" className={styles.loginBtn3}>Create Account</button>
               </form>
             </div>
           </div>
