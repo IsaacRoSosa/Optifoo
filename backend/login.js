@@ -1,5 +1,4 @@
 // backend/login.js
-// backend/login.js
 import { auth, googleProvider, githubProvider, db } from './firebase'; // Importamos los proveedores y Firestore
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore'; // Para guardar en Firestore
@@ -10,8 +9,11 @@ export const loginUser = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential.user;
-    } catch (error) {
-      throw new Error(handleAuthError(error)); 
+    } 
+    catch (error) {
+      const safeErrorMessage = handleAuthError(error);  
+      console.log('Error en el login:', safeErrorMessage); 
+      return safeErrorMessage;
     }
 };
 
@@ -30,12 +32,14 @@ export const loginWithGoogle = async () => {
           name: user.displayName, 
           createdAt: new Date() 
         });
-        console.log('Nuevo usuario registrado:', user.email);
       }
 
       return user;
-    } catch (error) {
-      throw new Error(handleAuthError(error));
+    } 
+    catch (error) {
+      const safeErrorMessage = handleAuthError(error);  
+      console.log('Error en el registro o login:', safeErrorMessage); 
+      return safeErrorMessage;
     }
 };
 
@@ -53,12 +57,13 @@ export const loginWithGithub = async () => {
           githubUsername: result.additionalUserInfo.username,
           createdAt: new Date() 
         });
-        console.log('Nuevo usuario registrado con GitHub:', user.email);
       }
 
       return user;
     } catch (error) {
-      throw new Error(handleAuthError(error));
+      const safeErrorMessage = handleAuthError(error);  
+      console.log('Error en el registro:', safeErrorMessage); 
+      return safeErrorMessage;
     }
 };
 

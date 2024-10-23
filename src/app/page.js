@@ -9,13 +9,14 @@ export default function Home() {
     <main className={styles.main}>
       <HomePage />
 
-
-
-
-
-
+      <div className={styles.header}>
+        <Image src="/Images/sidebar/Jobmiga_logo.png" alt="Jobmiga Logo" width={90} height={90} />
+        <h1 className={styles.brand}>OPTIFOOD</h1>
+        
+      </div> 
   
     </main>
+    
   );
 }
  

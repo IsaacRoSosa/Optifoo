@@ -1,14 +1,49 @@
 'use client'
 import styles from '@/styles/logIn.module.css';
 import { useState } from 'react';
+import { signupUser } from '../../../backend/auth';
+import { loginUser } from '../../../backend/login';
+import { handleAuthError } from '../../../backend/authErrors';
 import Image from 'next/image';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleToggle = () => {
     setIsSignUp(!isSignUp);
   };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const user = await loginUser(email, password);
+    } 
+    catch (e) {
+      setError('Error inesperado al hacer login del usuario.');
+    }
+    setLoading(false);
+  };
+
+  const handleSignUp = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const user = await signupUser(email, password, { name: `${firstName} ${lastName}` });
+    } 
+    catch (e) {
+      setError('Error inesperado al registrar el usuario.'); 
+    }
+  
+    setLoading(false);
+  };
+  
 
   return (
     <div className={styles.container}>
@@ -21,16 +56,34 @@ export default function AuthPage() {
 
               <form className={styles.form}>
                 <label htmlFor="email" className={styles.label}>Email</label>
-                <input id="email" type="email" name="email" placeholder="Enter your email" className={styles.input} required />
+                <input 
+                  id="email" 
+                  type="email" 
+                  name="email" 
+                  placeholder="Enter your email" 
+                  className={styles.input} 
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
                 <label htmlFor="password" className={styles.label}>Password</label>
-                <input id="password" name="password" type="password" placeholder="Minimum 8 characters with a number" className={styles.input} required />
+                <input 
+                  id="password" 
+                  name="password" 
+                  type="password" 
+                  placeholder="Minimum 8 characters with a number" 
+                  className={styles.input} 
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
 
                 <div className={styles.forgotPassword}>
                   <a href="#" className={styles.forgotPasswordLink}>FORGOT PASSWORD?</a>
                 </div>
 
-                <button type="button" className={styles.loginBtn}>Log in</button>
+                <button type="button" onClick={handleLogin} className={styles.loginBtn}>Log in</button>
               </form>
             </div>
 
@@ -59,37 +112,82 @@ export default function AuthPage() {
                 <div className={styles.twoColumn}>
                   <div className={styles.question}>
                     <label htmlFor="first-name" className={styles.label2}>First Name</label>
-                    <input id="first-name" name="firstName" type="text" placeholder="Ex. John" className={styles.inputSign} />
+                    <input 
+                      id="first-name" 
+                      name="firstName" 
+                      type="text" 
+                      placeholder="Ex. John" 
+                      className={styles.inputSign}
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
                   </div>
                   <div className={styles.question}>
                     <label htmlFor="last-name" className={styles.label2}>Last Name</label>
-                    <input id="last-name" name="lastName" type="text" placeholder="Ex. Pork" className={styles.inputSign} />
+                    <input 
+                      id="last-name" 
+                      name="lastName" 
+                      type="text" 
+                      placeholder="Ex. Pork" 
+                      className={styles.inputSign}
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)} 
+                    />
                   </div>
                 </div>
 
                 <div className={styles.twoColumn}>
                   <div className={styles.question}>
                     <label htmlFor="email-signup" className={styles.label2}>Email</label>
-                    <input id="email-signup" name="email" type="email" placeholder="Ex. muppets@show.com" className={styles.inputSign} />
+                    <input 
+                      id="email-signup" 
+                      name="email" 
+                      type="email" 
+                      placeholder="Ex. muppets@show.com" 
+                      className={styles.inputSign}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)} 
+                    />
                   </div>
+
                   <div className={styles.question}>
                     <label htmlFor="username" className={styles.label2}>Username</label>
-                    <input id="username" name="username" type="text" placeholder="Ex. KerminThePhrog" className={styles.inputSign} />
+                    <input 
+                      id="username" 
+                      name="username" 
+                      type="text" 
+                      placeholder="Ex. KerminThePhrog" 
+                      className={styles.inputSign}
+                    />
                   </div>
                 </div>
 
                 <div className={styles.twoColumn}>
                   <div className={styles.question}>
                     <label htmlFor="password-signup" className={styles.label2}>Password</label>
-                    <input id="password-signup" name="password" type="password" placeholder="8 characters with a number" className={styles.inputSign} />
+                    <input 
+                      id="password-signup" 
+                      name="password" 
+                      type="password" 
+                      placeholder="8 characters with a number" 
+                      className={styles.inputSign}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)} 
+                    />
                   </div>
                   <div className={styles.question}>
                     <label htmlFor="confirm-password" className={styles.label2}>Confirm Password</label>
-                    <input id="confirm-password" name="confirmPassword" type="password" placeholder="********" className={styles.inputSign} />
+                    <input 
+                      id="confirm-password" 
+                      name="confirmPassword" 
+                      type="password" 
+                      placeholder="********" 
+                      className={styles.inputSign}
+                    />
                   </div>
                 </div>
 
-                <button type="button" className={styles.loginBtn3}>Create Account</button>
+                <button type="button" onClick={handleSignUp} className={styles.loginBtn3}>Create Account</button>
               </form>
             </div>
           </div>
