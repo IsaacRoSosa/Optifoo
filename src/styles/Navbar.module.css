@@ -8,9 +8,12 @@
     justify-content: space-between;
     align-items: center;
     height: 8vh;
-  }
-  
-  .navbar_brand a {
+    position: sticky; /* Hace que la barra de navegación sea sticky */
+    top: 0; /* La fija en la parte superior */
+    z-index: 1000; /* Asegura que la barra de navegación esté por encima de otros elementos */
+}
+
+.navbar_brand a {
     color: white;
     text-decoration: none;
     font-size: 2.8rem;
@@ -19,28 +22,24 @@
     font-weight: 900;
     margin-left: 1em;
     letter-spacing: 0.1em;
+}
 
-  }
-  
-  .navbar_nav {
+.navbar_nav {
     list-style-type: none;
     display: flex;
     gap: 2rem;
     align-items: center;
-  }
-  
-  .nav_item a {
+}
+
+.nav_item a {
     color: white;
     text-decoration: none;
     font-size: 1.5rem;
     text-align: center;
     display: flex;
-    
-  }
+}
 
-  .LogoContainer{
+.LogoContainer {
     background-color: var(--second-green);
     border-radius: 15%;
-  }
-
-  
+}

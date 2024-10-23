@@ -16,13 +16,13 @@ export default function NavBar() {
           <Link href="/pantry">Pantry</Link>
         </li>
         <li className={styles.nav_item}>
-          <Link href="/waste_prevented">Waste Monitor</Link>
+          <Link href="/wastePrevented">Waste Monitor</Link>
         </li>
         <li className={styles.nav_item}>
           <Link href="/recipes">Recipes</Link>
         </li>
         <li className={styles.nav_item}>
-          <Link href="/recipe_generator">Recipe Generator</Link>
+          <Link href="/recipeGenerator">Recipe Generator</Link>
         </li>
         <li className={styles.nav_item}>
             <div className={styles.LogoContainer}>
