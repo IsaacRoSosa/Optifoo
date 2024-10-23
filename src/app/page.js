@@ -1,15 +1,16 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-
-
-
+import HomePage from "@/components/HomePage";
 
 export default function Home() {
 
 
   return (
     <main className={styles.main}>
-      <h1>My Pantry</h1>
+      <HomePage />
+
+
+
 
 
 
