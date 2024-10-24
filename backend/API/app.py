@@ -634,7 +634,7 @@ def create_recipy():
         if not isinstance(time_to_prepare, int) or not isinstance(be_public, bool) or not isinstance(made_by, str):
             return jsonify({"error": "Faltan datos o el formato no es correcto."}), 400
 
-        recipy_ref = db.collection('Recipy').document()
+        recipy_ref = db.collection('recipy').document()
 
         recipy_data = {
             "idRecipy": recipy_ref.id,  
@@ -654,7 +654,7 @@ def create_recipy():
 @app.route('/api/getrecipy/<recipy_id>', methods=['GET'])
 def get_recipy_by_id(recipy_id):
     try:
-        recipy_ref = db.collection('Recipy').document(recipy_id)
+        recipy_ref = db.collection('recipy').document(recipy_id)
         recipy_doc = recipy_ref.get()
 
         if not recipy_doc.exists:
@@ -671,7 +671,7 @@ def get_recipy_by_id(recipy_id):
 @app.route('/api/getrecipies', methods=['GET'])
 def get_all_recipies():
     try:
-        recipies_ref = db.collection('Recipy')
+        recipies_ref = db.collection('recipy')
         recipies = recipies_ref.stream()
 
         recipies_list = []
@@ -713,7 +713,7 @@ def update_recipy(recipy_id):
                 return jsonify({"error": "El valor de 'bePublic' debe ser un booleano."}), 400
             update_data['bePublic'] = be_public
 
-        recipy_ref = db.collection('Recipy').document(recipy_id)
+        recipy_ref = db.collection('recipy').document(recipy_id)
         recipy_doc = recipy_ref.get()
 
         if not recipy_doc.exists:
@@ -729,7 +729,7 @@ def update_recipy(recipy_id):
 @app.route('/api/removerecipy/<recipy_id>', methods=['DELETE'])
 def delete_recipy(recipy_id):
     try:
-        recipy_ref = db.collection('Recipy').document(recipy_id)
+        recipy_ref = db.collection('recipy').document(recipy_id)
         recipy_doc = recipy_ref.get()
 
         if not recipy_doc.exists:
