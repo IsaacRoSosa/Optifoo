@@ -3,12 +3,12 @@ import styles from '@/styles/recipes.module.css';
 import { useState } from 'react';
 
 const icons = {
-  breakfast: "/Images/manzana1.jpg",
-  vegetarian: "/Images/manzana1.jpg",
-  meat: "/Images/manzana1.jpg",
-  dessert: "/Images/manzana1.jpg",
-  lunch: "/Images/manzana1.jpg",
-  chocolate: "/Images/manzana1.jpg"
+  breakfast: "/Images/comida1.jfif",
+  vegetarian: "/Images/comida1.jfif",
+  meat: "/Images/comida1.jfif",
+  dessert: "/Images/comida1.jfif",
+  lunch: "/Images/comida1.jfif",
+  chocolate: "/Images/comida1.jfif"
 };
 
 const recipes = [
@@ -16,31 +16,31 @@ const recipes = [
       name: 'Mixed Tropical Fruit Salad',
       time: '30 Minutes',
       category: 'Healthy',
-      image: '/Images/manzana1.jpg',
+      image: '/Images/comida1.jfif',
     },
     {
       name: 'Big and Juicy Wagyu Beef Cheeseburger',
       time: '30 Minutes',
       category: 'Western',
-      image: '/Images/manzana1.jpg',
+      image: '/Images/comida1.jfif',
     },
     {
       name: 'Tropical Fruit Salad',
       time: '30 Minutes',
       category: 'Healthy',
-      image: '/Images/manzana1.jpg',
+      image: '/Images/comida1.jfif',
     },
     {
       name: 'Juicy Wagyu Beef Cheeseburger',
       time: '30 Minutes',
       category: 'Western',
-      image: '/Images/manzana1.jpg',
+      image: '/Images/comida1.jfif',
     },
     {
       name: 'Fruit Salad',
       time: '30 Minutes',
       category: 'Healthy',
-      image: '/Images/manzana1.jpg',
+      image: '/Images/comida1.jfif',
     },
   ];
 
