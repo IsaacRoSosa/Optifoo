@@ -4,7 +4,7 @@
 /* wp.module.css */
 
 .container {
-    background-color: #ebe484; 
+    background-color: #FEFAE0; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,7 +18,7 @@
 
 .expiringSoon {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     color: #0e0e0e;
     margin-bottom: 20px;
     text-align: center;
@@ -29,20 +29,20 @@
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
+    padding: -40px;
 }
 
 .iconWrapper {
-    width: 60px; 
-    height: 60px; 
-    background-color: #ec890f;
+    width: 60px;
+    height: 60px;
+    background-color: #ec890f; /* Ajusta el color de fondo según sea necesario */
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin: 2px; 
-    
-}
+    margin: 1px; /* Ajusta el margen para controlar el espacio entre contenedores */
+  }
 
 .icon {
     width: 90%; 
