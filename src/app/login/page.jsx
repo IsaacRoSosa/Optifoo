@@ -1,9 +1,6 @@
 'use client'
 import styles from '@/styles/logIn.module.css';
 import { useState } from 'react';
-import { signupUser } from '../../../backend/auth';
-import { loginUser } from '../../../backend/login';
-import { handleAuthError } from '../../../backend/authErrors';
 import Image from 'next/image';
 
 export default function AuthPage() {
@@ -18,30 +15,60 @@ export default function AuthPage() {
   const handleToggle = () => {
     setIsSignUp(!isSignUp);
   };
-
+  
   const handleLogin = async () => {
     setLoading(true);
     setError('');
     try {
-      const user = await loginUser(email, password);
-    } 
-    catch (e) {
-      setError('Error inesperado al hacer login del usuario.');
+      const response = await fetch('http://localhost:5001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('Usuario logueado:', data.user);
+      } else {
+        setError(data.error);  
+      }
+    } catch (error) {
+      setError('Error inesperado al hacer login.');
     }
     setLoading(false);
   };
-
-  const handleSignUp = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const user = await signupUser(email, password, { name: `${firstName} ${lastName}` });
-    } 
-    catch (e) {
-      setError('Error inesperado al registrar el usuario.'); 
-    }
   
-    setLoading(false);
+  const handleSignup = async () => {
+    console.log('Iniciando proceso de registro'); // Log para saber que el proceso de registro ha comenzado
+    setLoading(true); 
+    setError(''); 
+    try {
+
+      const response = await fetch('http://localhost:5001/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email, 
+          password, 
+          name: `${firstName} ${lastName}`,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+      } else {
+        setError(data.error); 
+      }
+    } catch (error) {
+      setError('Error inesperado al registrar usuario.');
+    }
+
+    setLoading(false); 
   };
   
 
@@ -103,7 +130,7 @@ export default function AuthPage() {
               <p className={styles.create2}>Log back, to see your applications</p>
               <Image className={styles.logo} src="/Images/egg1.webp" width={180} height={180} alt="Jobhill logo" />
 
-              <button type="button" onClick={handleToggle} className={styles.loginBtn2}>Log In</button>
+              <button type="button" onClick={handleLogin} className={styles.loginBtn2}>Log In</button>
             </div>
 
             <div className={styles.rightPanel2}>
@@ -187,7 +214,7 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <button type="button" onClick={handleSignUp} className={styles.loginBtn3}>Create Account</button>
+                <button type="button" onClick={handleSignup} className={styles.loginBtn3}>Create Account</button>
               </form>
             </div>
           </div>

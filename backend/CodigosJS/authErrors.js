@@ -1,5 +1,4 @@
 //backend/authErrors.js
-
 export const handleAuthError = (error) => {
   // Mapa de errores con el código como clave y el mensaje como valor
   const errorMessages = {
