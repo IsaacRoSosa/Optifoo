@@ -16,19 +16,35 @@ const recipes = [
       name: 'Mixed Tropical Fruit Salad',
       time: '30 Minutes',
       category: 'Healthy',
-      image: '/Images/manzana1.jpg', // Reemplaza con la ruta de tu imagen
+      image: '/Images/manzana1.jpg',
     },
     {
       name: 'Big and Juicy Wagyu Beef Cheeseburger',
       time: '30 Minutes',
       category: 'Western',
-      image: '/Images/manzana1.jpg', // Reemplaza con la ruta de tu imagen
+      image: '/Images/manzana1.jpg',
     },
-    // ... (agrega más recetas)
+    {
+      name: 'Tropical Fruit Salad',
+      time: '30 Minutes',
+      category: 'Healthy',
+      image: '/Images/manzana1.jpg',
+    },
+    {
+      name: 'Juicy Wagyu Beef Cheeseburger',
+      time: '30 Minutes',
+      category: 'Western',
+      image: '/Images/manzana1.jpg',
+    },
+    {
+      name: 'Fruit Salad',
+      time: '30 Minutes',
+      category: 'Healthy',
+      image: '/Images/manzana1.jpg',
+    },
   ];
 
 export default function CategoriesPage() {
-  // Definir estado para las categorías
   const [categories] = useState([
     { name: 'Breakfast', icon: 'breakfast' },
     { name: 'Vegetarian', icon: 'vegetarian' },
@@ -38,23 +54,18 @@ export default function CategoriesPage() {
     { name: 'Chocolate', icon: 'chocolate' }
   ]);
 
-  // Estado para gestionar qué recetas han sido "liked"
   const [likedRecipes, setLikedRecipes] = useState([]);
 
-  // Función para manejar clic en el corazón
   const handleLikeClick = (recipeName) => {
     if (likedRecipes.includes(recipeName)) {
-      // Si ya está en la lista de "liked", lo removemos (dislike)
       setLikedRecipes(likedRecipes.filter(name => name !== recipeName));
     } else {
-      // Si no está, lo agregamos (like)
       setLikedRecipes([...likedRecipes, recipeName]);
     }
   };
 
   return (
     <div className={styles.container}>
-      {/* Contenedor de título y botón */}
       <div className={styles.headerContainer}>
         <h1 className={styles.title}>Categories</h1>
         <button className={styles.viewAllButton}>View All Categories</button>
@@ -71,24 +82,21 @@ export default function CategoriesPage() {
         ))}
       </div>
 
-      {/* Sección de mensaje sobre las recetas */}
       <div className={styles.recipeMessage}>
         <h2>Try these delicious recipes to make your day</h2>
         <p>Remember to use soon-to-expire ingredients :) Every Ingredient Counts!</p>
       </div>
 
-      {/* Tarjetas de recetas */}
       <div className={styles.recipeCards}>
         {recipes.map((recipe) => (
           <div key={recipe.name} className={styles.recipeCard}>
             <div className={styles.recipeImageContainer}>
               <img src={recipe.image} alt={recipe.name} className={styles.recipeImage} />
-              {/* Botón de corazón */}
               <button
                 className={`${styles.heartButton} ${likedRecipes.includes(recipe.name) ? styles.liked : ''}`}
                 onClick={() => handleLikeClick(recipe.name)}
               >
-                ❤️
+                {likedRecipes.includes(recipe.name) ? 'Liked' : 'Like'}
               </button>
             </div>
             <h3 className={styles.recipeTitle}>{recipe.name}</h3>

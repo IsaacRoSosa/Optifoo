@@ -89,9 +89,10 @@
 
 /* Recipe Cards Section */
 .recipeCards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Máximo 4 columnas */
+  gap: 20px; /* Espacio entre las tarjetas */
+  margin-top: 20px;
 }
 
 .recipeCard {
@@ -120,20 +121,29 @@
   object-fit: cover;
 }
 
+/* Estilos para el botón de "me gusta" */
 .heartButton {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
+  background-color: #f0f0f0;
+  border: 2px solid #ff5a5a;
+  color: #ff5a5a;
+  padding: 8px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  color: black; /* Corazón en negro por defecto */
-  transition: color 0.3s ease;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.heartButton.liked {
-  color: red; /* Cambia a rojo cuando está "liked" */
+.heartButton:hover {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.liked {
+  background-color: #ff5a5a;
+  color: white;
 }
 
 /* Estilo para el título de la receta */
