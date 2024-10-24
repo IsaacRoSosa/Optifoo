@@ -1,8 +1,8 @@
-import styles from "./../styles/Fridge.module.css";
-import FoodTypeGrid from "./FoodTypeGrid";
+import styles from "@/styles/Fridge.module.css";
 import { useState } from "react";
+import FoodTypeGrid from "./FoodTypeGrid";
 
-function Fridge() {
+function Freezer() {
   const [lettuceAmount, setLettuceAmount] = useState(100);
   const [carrotAmount, setCarrotAmount] = useState(100);
   return (
@@ -20,4 +20,4 @@ function Fridge() {
   );
 }
 
-export default Fridge;
+export default Freezer;
