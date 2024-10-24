@@ -2,6 +2,8 @@
 import styles from '@/styles/logIn.module.css';
 import { useState } from 'react';
 import Image from 'next/image';
+import { auth, googleProvider, githubProvider } from '../../../backend/CodigosJS/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -19,58 +21,136 @@ export default function AuthPage() {
   const handleLogin = async () => {
     setLoading(true);
     setError('');
+
     try {
+      // Enviar las credenciales al backend
       const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: email,  
+          password: password  
+        }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        console.log('Usuario logueado:', data.user);
       } else {
         setError(data.error);  
       }
     } catch (error) {
       setError('Error inesperado al hacer login.');
+      console.error('Error durante el login:', error);
     }
-    setLoading(false);
-  };
-  
-  const handleSignup = async () => {
-    console.log('Iniciando proceso de registro'); // Log para saber que el proceso de registro ha comenzado
-    setLoading(true); 
-    setError(''); 
-    try {
 
-      const response = await fetch('http://localhost:5001/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email, 
-          password, 
-          name: `${firstName} ${lastName}`,
-        }),
+    setLoading(false);
+};
+
+  
+const handleSignup = async () => {
+  setLoading(true); 
+  setError('');
+
+  try {
+    const response = await fetch('http://localhost:5001/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,  
+        password: password,  
+        name: `${firstName} ${lastName}`,  
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+    } else {
+      setError(data.error);  // Mostrar el error devuelto por el backend
+    }
+  } catch (error) {
+    setError('Error inesperado al registrar usuario.');
+    console.error('Error durante el registro:', error);
+  }
+
+  setLoading(false);  // Finalizar el proceso
+};
+
+const handleLoginWithGoogle = async () => {
+  setLoading(true); 
+  setError(''); 
+
+  try {
+      const result = await signInWithPopup(auth, googleProvider);
+
+      // Obtener el ID token del usuario autenticado
+      const idToken = await result.user.getIdToken();
+
+      // Enviar el ID token al backend para verificar la autenticación
+      const response = await fetch('http://localhost:5001/api/login/google', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              id_token: idToken,  // Enviar el ID token al backend
+          }),
       });
+
       const data = await response.json();
 
       if (response.ok) {
       } else {
-        setError(data.error); 
+          setError(data.error);  // Mostrar el error devuelto por el backend
       }
-    } catch (error) {
-      setError('Error inesperado al registrar usuario.');
-    }
+  } catch (error) {
+      setError('Error inesperado al iniciar sesión con Google.');
+      console.error('Error durante el inicio de sesión con Google:', error);
+  }
 
-    setLoading(false); 
-  };
-  
+  setLoading(false);  // Finalizar el proceso
+};
+ 
+const handleLoginWithGitHub = async () => {
+  setLoading(true); 
+  setError(''); 
+
+  try {
+      // Iniciar sesión con GitHub en el frontend
+      const result = await signInWithPopup(auth, githubProvider);
+
+      // Obtener el ID token del usuario autenticado
+      const idToken = await result.user.getIdToken();
+
+      // Enviar el ID token al backend para verificar la autenticación
+      const response = await fetch('http://localhost:5001/api/login/github', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              id_token: idToken,  // Enviar el ID token al backend
+          }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+      } else {
+          setError(data.error);  // Mostrar el error devuelto por el backend
+      }
+  } catch (error) {
+      setError('Error inesperado al iniciar sesión con GitHub.');
+      console.error('Error durante el inicio de sesión con GitHub:', error);
+  }
+
+  setLoading(false);  // Finalizar el proceso
+};
 
   return (
     <div className={styles.container}>
@@ -130,7 +210,7 @@ export default function AuthPage() {
               <p className={styles.create2}>Log back, to see your applications</p>
               <Image className={styles.logo} src="/Images/egg1.webp" width={180} height={180} alt="Jobhill logo" />
 
-              <button type="button" onClick={handleLogin} className={styles.loginBtn2}>Log In</button>
+              <button type="button" onClick={handleToggle} className={styles.loginBtn2}>Log In</button>
             </div>
 
             <div className={styles.rightPanel2}>
