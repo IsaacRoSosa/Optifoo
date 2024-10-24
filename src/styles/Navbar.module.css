@@ -1,0 +1,46 @@
+/* Navbar Styles */
+.navbar {
+    background-color: #269224;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    min-height: 50px;
+    position: sticky; /* Makes it stick to the top */
+    top: 0; /* Stick to the very top */
+    z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+
+
+.navbar_brand a {
+    color: white;
+    text-decoration: none;
+    font-size: 2.8rem;
+    letter-spacing: 0.1em;
+    font-style: italic;
+    font-weight: 900;
+    margin-left: 1em;
+}
+
+.navbar_nav {
+    list-style-type: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav_item a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    text-align: center;
+    display: flex;
+}
+
+.LogoContainer {
+    background-color: var(--second-green);
+    border-radius: 15%;
+}
