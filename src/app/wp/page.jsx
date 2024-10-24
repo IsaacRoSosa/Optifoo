@@ -3,7 +3,7 @@ import styles from '@/styles/wp.module.css';
 import { useState } from 'react';
 
 const icons = {
-  lechuga: "/Images/lechuga.webp",
+  lechuga: "/Images/manzana1.jpg",
   sandia: "/Images/lechuga.webp",
   tomate: "/Images/lechuga.webp",
   carne: "/Images/lechuga.webp",

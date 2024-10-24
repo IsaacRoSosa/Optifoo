@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Londrina+Solid:wght@100;300;400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap');
+
+.container {
+  text-align: center;
+  background-color: #FEFAE0;
+  padding: 40px;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 36px;
+  color: #333;
+  margin-right: 20px;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #116420;
+  border-radius: 12px;
+  padding: 20px;
+  width: 120px;
+  transition: transform 0.2s;
+}
+
+.categoryCard:hover {
+  transform: translateY(-10px);
+}
+
+.icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.viewAllButton {
+  background-color: #99def3;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.viewAllButton:hover {
+  background-color: #6200ff;
+}
+
+.recipeMessage {
+  margin-top: 40px;
+  text-align: center;
+  color: #333;
+}
+
+.recipeMessage h2 {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.recipeMessage p {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Recipe Cards Section */
+.recipeCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.recipeCard {
+  position: relative;
+  width: 250px; /* Ajusta según lo que necesites */
+  margin: 20px;
+  text-align: left;
+  background-color: #FEFAE0; /* Fondo claro para la tarjeta */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.recipeCard:hover {
+  transform: scale(1.05); /* Efecto de hover */
+}
+
+.recipeImageContainer {
+  position: relative;
+}
+
+.recipeImage {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.heartButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black; /* Corazón en negro por defecto */
+  transition: color 0.3s ease;
+}
+
+.heartButton.liked {
+  color: red; /* Cambia a rojo cuando está "liked" */
+}
+
+/* Estilo para el título de la receta */
+.recipeTitle {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 18px;
+  margin: 10px;
+  font-weight: bold;
+  color: #333; /* Título de receta en color oscuro */
+}
+
+/* Estilo para la información (tiempo y categoría) */
+.recipeInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #666; /* Texto general de información en gris */
+}
+
+/* Estilo para el tiempo de la receta */
+.recipeTime {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #FFA500; /* Naranja para el tiempo */
+}
+
+/* Estilo para la categoría de la receta */
+.recipeCategory {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #2E8B57; /* Verde para la categoría */
+}
+
+/* Espaciado entre el ícono y el texto */
+.recipeTime span, .recipeCategory span {
+  margin-right: 5px;
+}
