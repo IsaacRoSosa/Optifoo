@@ -9,6 +9,10 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv 
 from functools import wraps
 import requests
+import cv2
+import numpy as np
+from detector import detect_objects
+from ocr import extract_text
 
 cred = credentials.Certificate(r"./backend/credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
@@ -24,6 +28,36 @@ db = firestore.client()
 app = Flask(__name__)
 
 CORS(app)
+
+def convert_to_image(file_storage):
+    """Converts an image received via Flask to OpenCV format."""
+    file_bytes = np.frombuffer(file_storage.read(), np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    return img
+
+@app.route('/api/detect', methods=['POST'])
+def detect():
+    """Detects objects in an image."""
+    if 'image' not in request.files:
+        return jsonify({"error": "Image is missing"}), 400
+
+    image = request.files['image']
+    img_cv2 = convert_to_image(image)
+    results = detect_objects(img_cv2)
+
+    return jsonify(results)
+
+@app.route('/api/ocr', methods=['POST'])
+def ocr():
+    """Extracts text from an image using OCR."""
+    if 'image' not in request.files:
+        return jsonify({"error": "Image is missing"}), 400
+
+    image = request.files['image']
+    img_cv2 = convert_to_image(image)
+    results = extract_text(img_cv2)
+
+    return jsonify(results)
 
 '''
 SECCION DE LOGIN Y SIGNUP

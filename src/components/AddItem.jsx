@@ -1,5 +1,47 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/AddItem.module.css";
+import SendImageButton from "./SendImageButton";
+
+const detectImage = async (imageFile, setResponse) => {
+  const url = 'http://localhost:5001/api/detect';
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await fetch(url, { method: 'POST', body: formData });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Server response:', data);
+      setResponse(data); // Actualiza el estado con la respuesta de la API
+    } else {
+      console.error(`Request error: ${response.status} - ${data.error}`);
+    }
+  } catch (error) {
+    console.error('Error sending request:', error);
+  }
+};
+
+const extractTextFromImage = async (imageFile, setResponse) => {
+  const url = 'http://localhost:5001/api/ocr';
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await fetch(url, { method: 'POST', body: formData });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Server response:', data);
+      setResponse(data); // Actualiza el estado con la respuesta de la API
+    } else {
+      console.error(`Request error: ${response.status} - ${data.error}`);
+    }
+  } catch (error) {
+    console.error('Error sending request:', error);
+  }
+};
+
 
 function AddItem({ onBackClick }) {
   const [formData, setFormData] = useState({
@@ -11,6 +53,19 @@ function AddItem({ onBackClick }) {
   });
 
   const [products, setProducts] = useState([]);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [response, setResponse] = useState([]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === 'image/jpeg') {
+      setSelectedFile(file);
+    } else {
+      alert('Please upload a valid JPG image.');
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -173,13 +228,43 @@ function AddItem({ onBackClick }) {
           </select>
         </div>
 
-        <button
-          type="submit"
-          className={styles.addButton}
-          disabled={!isFormValid}
-        >
-          ADD ITEM
-        </button>
+        <div>
+          <button type="submit" className={styles.addButton} disabled={!isFormValid}>
+            ADD ITEM
+          </button>
+
+          <div style={{ marginTop: '20px' }}>
+            <input type="file" accept="image/jpeg" onChange={handleFileChange} />
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              <SendImageButton
+                imageFile={selectedFile}
+                onClickFunction={(image) => detectImage(image, setResponse)}
+                buttonText="Detect Image"
+              />
+              <SendImageButton
+                imageFile={selectedFile}
+                onClickFunction={(image) => extractTextFromImage(image, setResponse)}
+                buttonText="Extract Text"
+              />
+            </div>
+          </div>
+
+          <div style={{ marginTop: '20px' , color: "black", marginLeft: "20px"}}>
+            <h3>Detected Items:</h3>
+            <ul>
+              {response.length > 0 ? (
+                response.map((item, index) => (
+                  <li key={index}>
+                    {item.quantity} - {item.element}
+                  </li>
+                ))
+              ) : (
+                <li>No items detected</li>
+              )}
+            </ul>
+          </div>
+        </div>
+        
       </form>
     </div>
   );
