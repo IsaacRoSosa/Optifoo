@@ -9,9 +9,13 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv 
 from functools import wraps
 import requests
+import cv2
+import numpy as np
+from detector import detectar_objetos
+from ocr import extraer_texto
 
 #cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
-cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
+cred = credentials.Certificate("./backend/credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 
@@ -25,6 +29,36 @@ db = firestore.client()
 app = Flask(__name__)
 
 CORS(app)
+
+def convertir_a_imagen(file_storage):
+    """Convierte una imagen recibida en Flask a formato OpenCV."""
+    file_bytes = np.frombuffer(file_storage.read(), np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    return img
+
+@app.route('/api/detectar', methods=['POST'])
+def detectar():
+    """Detecta objetos en una imagen."""
+    if 'imagen' not in request.files:
+        return jsonify({"error": "Falta la imagen"}), 400
+
+    imagen = request.files['imagen']
+    img_cv2 = convertir_a_imagen(imagen)
+    resultados = detectar_objetos(img_cv2)
+
+    return jsonify(resultados)
+
+@app.route('/api/ocr', methods=['POST'])
+def ocr():
+    """Extrae texto de una imagen mediante OCR."""
+    if 'imagen' not in request.files:
+        return jsonify({"error": "Falta la imagen"}), 400
+
+    imagen = request.files['imagen']
+    img_cv2 = convertir_a_imagen(imagen)
+    resultados = extraer_texto(img_cv2)
+
+    return jsonify(resultados)
 
 '''
 SECCION DE LOGIN Y SIGNUP

@@ -35,6 +35,9 @@ yarn-error.log*
 .env*
 .venv
 backend/credentials
+venv
+env
+
 # vercel
 .vercel
 
