@@ -8,7 +8,7 @@ import {
   addDietToUser,
   deleteAllergyFromUser,
   deleteDietFromUser,
-} from "../api";  // Ajusta la ruta del archivo donde defines tus métodos API
+} from "../api";  
 
 const Preferences = () => {
   const userId = "123"; 
