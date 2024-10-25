@@ -595,6 +595,7 @@ def update_product(product_id):
         if url_imagen:
             update_data["url_product"] = url_imagen
 
+
         product_ref.update(update_data)
 
         return jsonify({"message": "Producto actualizado correctamente.", "product": update_data}), 200
