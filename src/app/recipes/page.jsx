@@ -76,7 +76,9 @@ export default function MainPage({ userId }) {
   const filteredRecipes = recipes.filter((recipe) => {
     const matchesCategory =
       selectedCategories.length === 0 ||
-      recipe.categories.some((cat) => selectedCategories.includes(cat)); // Verifica si hay categorías coincidentes
+      (Array.isArray(recipe.categories) && 
+       recipe.categories.some((cat) => selectedCategories.includes(cat))); // Verifica si hay categorías
+  
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });

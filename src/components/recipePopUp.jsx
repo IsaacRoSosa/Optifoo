@@ -12,8 +12,8 @@ export default function RecipePopup({ recipe, onClose, onLike, onCook }) {
 
         <div className={styles.recipeImageContainer}>
           <img
-            src={recipe.image || '/Images/icons/OptiChef.png'} 
-            alt={recipe.title}
+          src={recipe.imageUrl || '/Images/icons/OptiChef.png'} 
+          alt={recipe.title}
             className={styles.recipeImage}
           />
           <button

@@ -13,7 +13,7 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
     <div className={styles.recipeCard} onClick={() => onClick(recipe)}>
       <div className={styles.recipeImageContainer}>
         <img
-          src={recipe.image || '/Images/icons/OptiChef.png'} // Imagen por defecto
+          src={recipe.imageUrl || '/Images/icons/OptiChef.png'} // Imagen por defecto
           alt={recipe.title}
           className={styles.recipeImage}
         />
@@ -36,7 +36,7 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
           </p>
           <p className={styles.recipeCategory}>
             <img className={styles.icon} src="/Images/icons/utensils.png" alt="category" />
-            {recipe.categories ? recipe.categories.join(', ') : 'No categories'}
+            {recipe.categories ? recipe.categories.join(', ') : 'OptiChef'}
 
           </p>
         </div>
