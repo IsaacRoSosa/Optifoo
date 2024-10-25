@@ -228,10 +228,14 @@ function AddItem({ onBackClick }) {
           </select>
         </div>
 
-        <div>
-          <button type="submit" className={styles.addButton} disabled={!isFormValid}>
+        <button type="submit" className={styles.addButton} disabled={!isFormValid}>
             ADD ITEM
-          </button>
+        </button>
+
+        <div style={{backgroundColor: "black",
+            padding: "10px",
+            borderRadius: "8px", marginTop: "20px"}}>
+
 
           <div style={{ marginTop: '20px' }}>
             <input type="file" accept="image/jpeg" onChange={handleFileChange} />
@@ -249,7 +253,10 @@ function AddItem({ onBackClick }) {
             </div>
           </div>
 
-          <div style={{ marginTop: '20px' , color: "black", marginLeft: "20px"}}>
+          <div style={{ 
+            marginTop: '20px', 
+            color: "white", 
+          }}>
             <h3>Detected Items:</h3>
             <ul>
               {response.length > 0 ? (
