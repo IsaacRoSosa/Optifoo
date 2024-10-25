@@ -6,15 +6,34 @@
     display: flex;
     justify-content: center;
     align-items: center; 
-    height: 100vh; /* Asegura que cubra toda la pantalla */
+    height: 100vh; 
   }
   .card {
     display: flex;
-    align-items: center;
+    align-items: center; 
     width: 80%;
     max-width: 800px;
     height: 100%;
     border-radius: 15px;
+  }
+
+  .socialLoginContainer {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .socialIcon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  
+  .socialIcon:hover {
+    transform: scale(1.1);
   }
 
 .cardInner {
@@ -104,6 +123,8 @@
   font-weight: bold;
 }
 
+
+
 .headingSecondary3{
 
   font-size: 3.3rem;
@@ -136,9 +157,10 @@
 
 .headingSecondary {
   font-size: 2.3rem;
-  margin-top: 0.4rem;
+  margin-top: 0px;
   text-align: center;
   color: #000000;
+  margin-bottom: 0px;
 }
 
 .headingSecondary2 {
@@ -165,8 +187,7 @@
   flex-direction: column;
   width: 70%;
   align-self: center;
-
-  gap: 0.4rem;
+  margin-top: 0px;
 }
 
 /* Form styles */
@@ -175,9 +196,6 @@
  margin-top: 0.2rem;
 }
 
-.form{
-  margin-top: 2rem;
-}
 
 
 .label {

@@ -199,8 +199,20 @@ export default function AuthPage() {
                 </div>
 
                 <button type="button" onClick={handleLogin} className={styles.loginBtn}>Log in</button>
-                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>LoginWithGoogle</button>
-                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>LoginWithGithub</button>
+                <div className={styles.socialLoginContainer}>
+                      <img
+                        src="/Images/icons/google-icon.png"
+                        alt="Google Login"
+                        className={styles.socialIcon}
+                        onClick={handleLoginWithGoogle}
+                      />
+                      <img
+                        src="/Images/icons/github-icon.webp"
+                        alt="GitHub Login"
+                        className={styles.socialIcon}
+                        onClick={handleLoginWithGitHub}
+                      />
+                    </div>
               
               </form>
             </div>
@@ -303,12 +315,24 @@ export default function AuthPage() {
                       className={styles.inputSign}
                     />
                   </div>
-                </div>
+                </div> 
 
                 <button type="button" onClick={handleSignup} className={styles.loginBtn3}>Create Account</button>
 
-                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>SignUpWithGoogle</button>
-                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>SignUpWithGithub</button>
+                <div className={styles.socialLoginContainer}>
+                    <img
+                      src="/Images/icons/google-icon.png"
+                      alt="Google Login"
+                      className={styles.socialIcon}
+                      onClick={handleLoginWithGoogle}
+                    />
+                    <img
+                      src="/Images/icons/github-icon.webp"
+                      alt="GitHub Login"
+                      className={styles.socialIcon}
+                      onClick={handleLoginWithGitHub}
+                    />
+                  </div>
               </form>
             </div>
           </div>
