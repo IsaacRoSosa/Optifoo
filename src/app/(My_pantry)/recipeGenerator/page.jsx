@@ -59,6 +59,7 @@ export default function RecipeGenerator() {
   const [parsedRecipe, setParsedRecipe] = useState(null);
   const [error, setError] = useState(null); 
   const [loading, setLoading] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState(null);
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -92,23 +93,54 @@ export default function RecipeGenerator() {
 
       const fullGeneratedText = chunks.join(''); 
       setGeneratedContent(fullGeneratedText);
-      console.log(fullGeneratedText)
 
       const parsedRecipe = parseGeneratedRecipe(fullGeneratedText);
       setParsedRecipe(parsedRecipe); 
-      console.log(parsedRecipe)
 
       
 
     } catch (err) {
       setError('Error generating the recipe. Please try again.');
-      console.error('Error during recipe generation:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  
+  const handleGenerateImage = async () => {
+    setLoading(true);
+    setError(null);
+    setGeneratedContent(''); 
+    setParsedRecipe(null);  // Si también necesitas el contenido generado junto con la imagen
+    setGeneratedImage(null); // Añadir un estado para la imagen generada
+
+    const requestBody = {
+      ingredients: ingredients.split(','), 
+      preferences: preferences.split(','), 
+      restrictions: restrictions.split(','), 
+    };
+
+    try {
+      const response = await fetch('http://localhost:5001/api/generate-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error generating the recipe image');
+      }
+
+      const data = await response.json();
+      setGeneratedImage(data.image_url); 
+    } catch (err) {
+      setError('Error generating the recipe image. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className={styles.container}>
@@ -155,6 +187,13 @@ export default function RecipeGenerator() {
           <h3>Generated Recipe (Raw):</h3>
           <p>{generatedContent}</p>
         </div>
+      )}
+
+      {generatedImage && (
+          <div>
+            <h3>Generated Recipe Image:</h3>
+            <img src={generatedImage} alt="Generated Recipe" />
+          </div>
       )}
 
       {parsedRecipe && (

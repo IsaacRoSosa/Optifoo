@@ -19,12 +19,12 @@ const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy,
       const data = await response.json();
   
       if (response.ok) {
-        console.log('Receta creada:', data.recipy);
+        console.log('Receta creada:');
       } else {
-        console.error('Error al crear la receta:', data.error);
+        console.error('Error al crear la receta:');
       }
     } catch (error) {
-      console.error('Error inesperado:', error);
+      console.error('Error inesperado:');
     }
   };
   
@@ -41,12 +41,12 @@ const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy,
       const data = await response.json();
   
       if (response.ok) {
-        console.log('Receta obtenida:', data.recipy);
+        console.log('Receta obtenida:');
       } else {
-        console.error('Error al obtener la receta:', data.error);
+        console.error('Error al obtener la receta:');
       }
     } catch (error) {
-      console.error('Error inesperado:', error);
+      console.error('Error inesperado:');
     }
   };
 
@@ -63,12 +63,12 @@ const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy,
       const data = await response.json();
   
       if (response.ok) {
-        console.log('Recetas obtenidas:', data.recipies);
+        console.log('Recetas obtenidas:');
       } else {
-        console.error('Error al obtener las recetas:', data.error);
+        console.error('Error al obtener las recetas:');
       }
     } catch (error) {
-      console.error('Error inesperado:', error);
+      console.error('Error inesperado:');
     }
   };
   
@@ -85,12 +85,12 @@ const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy,
       const data = await response.json();
   
       if (response.ok) {
-        console.log('Receta actualizada:', data.recipy);
+        console.log('Receta actualizada:');
       } else {
-        console.error('Error al actualizar la receta:', data.error);
+        console.error('Error al actualizar la receta:');
       }
     } catch (error) {
-      console.error('Error inesperado:', error);
+      console.error('Error inesperado:');
     }
   };
   

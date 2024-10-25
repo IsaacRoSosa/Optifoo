@@ -43,7 +43,6 @@ export async function* streamResponseChunks(response) {
             const { done, value } = await reader.read();
             if (done) break;
             buffer += new TextDecoder().decode(value);
-            console.log(new TextDecoder().decode(value));
             yield* processBuffer();
         }
     } finally {

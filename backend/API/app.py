@@ -832,5 +832,55 @@ def generate_recipy():
             return jsonify({"error": str(e)})
 
 
+@app.route("/api/generate-image", methods=["POST"])
+def generate_recipe_image():
+    if request.method == "POST":
+        try:
+            req_body = request.get_json()
+
+            ingredients = req_body.get("ingredients", [])
+            preferences = req_body.get("preferences", [])
+            restrictions = req_body.get("restrictions",[])
+
+            if isinstance(ingredients, str):
+                ingredients = [ingredients]
+            if isinstance(preferences, str):
+                preferences = [preferences]
+            if isinstance(restrictions, str):
+                restrictions = [restrictions]
+
+            if not ingredients:
+                return jsonify({"error": "Se deben proporcionar ingredientes para generar una receta"}), 400
+
+            content = (      
+                f"Create a dish image based on the following ingredients: {', '.join(ingredients)}. "
+                f"Take into account the following preferences: {', '.join(preferences)}. "
+                f"Consider the following dietary restrictions: {', '.join(restrictions)}. "
+                "Please generate an image that reflects the dish with these ingredients."
+            )
+
+            gemini_api_url = "https://api.gemini.com/v1/images/generations"
+            headers = {
+                "Authorization": f"Bearer {gemini_api}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "prompt": content,
+                "n": 1,
+                "size": "1024x1024"
+            }
+
+            response = requests.post(gemini_api_url, headers=headers, json=data)
+            if response.status_code != 200:
+                return jsonify({"error": f"Failed to generate image: {response.text}"}), 400
+
+            image_url = response.json()['data'][0]['url']
+
+            return jsonify({"image_url": image_url}), 200
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(port=5001)
