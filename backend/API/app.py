@@ -516,6 +516,7 @@ def create_product():
         name = data.get('name')
         category = data.get('category')
         is_recipy = data.get('beRecipy')
+        url_imagen = data.get('url_imagen')
 
         if not all([name, category]) or not isinstance(is_recipy, bool):
             return jsonify({"error": "Faltan datos o el valor de 'isRecipy' no es válido."}), 400
@@ -526,7 +527,8 @@ def create_product():
             "name": name,
             "category": category,
             "idProducto": product_ref.id, 
-            "beRecipy": is_recipy
+            "beRecipy": is_recipy,
+            "url_product": url_imagen
         }
 
         product_ref.set(product_data)
@@ -571,6 +573,7 @@ def update_product(product_id):
         name = data.get('name')
         category = data.get('category')
         is_recipy = data.get('beRecipy')
+        url_imagen = data.get('url_product')
 
         if not any([name, category, is_recipy is not None]):
             return jsonify({"error": "Se requiere al menos un campo para actualizar."}), 400
@@ -589,6 +592,9 @@ def update_product(product_id):
             update_data["category"] = category
         if is_recipy is not None:
             update_data["beRecipy"] = is_recipy
+        if url_imagen:
+            update_data["url_product"] = url_imagen
+
 
         product_ref.update(update_data)
 
@@ -598,7 +604,7 @@ def update_product(product_id):
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/removeproduct/<product_id>', methods=['DELETE'])
-def delete_product(product_id):
+def deleteproduct(product_id):
     try:
         product_ref = db.collection('product').document(product_id)
         product_doc = product_ref.get()
