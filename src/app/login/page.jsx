@@ -38,6 +38,7 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('user_uid', data.user);
       } else {
         setError(data.error);  
       }
@@ -47,110 +48,117 @@ export default function AuthPage() {
     }
 
     setLoading(false);
-};
+  };
 
   
-const handleSignup = async () => {
-  setLoading(true); 
-  setError('');
+  const handleSignup = async () => {
+    setLoading(true); 
+    setError('');
 
-  try {
-    const response = await fetch('http://localhost:5001/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,  
-        password: password,  
-        name: `${firstName} ${lastName}`,  
-      }),
-    });
+    try {
+      const response = await fetch('http://localhost:5001/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,  
+          password: password,  
+          name: `${firstName} ${lastName}`,  
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-    } else {
-      setError(data.error);  // Mostrar el error devuelto por el backend
+      if (response.ok) {
+        localStorage.setItem('user_uid', data.user);
+      } else {
+        setError(data.error);  // Mostrar el error devuelto por el backend
+      }
+    } catch (error) {
+      setError('Error inesperado al registrar usuario.');
+      console.error('Error durante el registro:', error);
     }
-  } catch (error) {
-    setError('Error inesperado al registrar usuario.');
-    console.error('Error durante el registro:', error);
-  }
 
-  setLoading(false);  // Finalizar el proceso
-};
+    setLoading(false);  // Finalizar el proceso
+  };
 
-const handleLoginWithGoogle = async () => {
-  setLoading(true); 
-  setError(''); 
+  const handleLoginWithGoogle = async () => {
+    setLoading(true); 
+    setError(''); 
 
-  try {
-      const result = await signInWithPopup(auth, googleProvider);
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
 
-      // Obtener el ID token del usuario autenticado
-      const idToken = await result.user.getIdToken();
+        // Obtener el ID token del usuario autenticado
+        const idToken = await result.user.getIdToken();
 
-      // Enviar el ID token al backend para verificar la autenticación
-      const response = await fetch('http://localhost:5001/api/login/google', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              id_token: idToken,  // Enviar el ID token al backend
-          }),
-      });
+        // Enviar el ID token al backend para verificar la autenticación
+        const response = await fetch('http://localhost:5001/api/login/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id_token: idToken,  // Enviar el ID token al backend
+            }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-      } else {
-          setError(data.error);  // Mostrar el error devuelto por el backend
-      }
-  } catch (error) {
-      setError('Error inesperado al iniciar sesión con Google.');
-      console.error('Error durante el inicio de sesión con Google:', error);
-  }
+        if (response.ok) {
+          localStorage.setItem('user_uid', data.user);
+        } else {
+            setError(data.error);  // Mostrar el error devuelto por el backend
+        }
+    } catch (error) {
+        setError('Error inesperado al iniciar sesión con Google.');
+    }
 
-  setLoading(false);  // Finalizar el proceso
-};
+    setLoading(false);  // Finalizar el proceso
+  };
  
-const handleLoginWithGitHub = async () => {
-  setLoading(true); 
-  setError(''); 
+  const handleLoginWithGitHub = async () => {
+    setLoading(true); 
+    setError(''); 
 
-  try {
-      // Iniciar sesión con GitHub en el frontend
-      const result = await signInWithPopup(auth, githubProvider);
+    try {
+        // Iniciar sesión con GitHub en el frontend
+        const result = await signInWithPopup(auth, githubProvider);
 
-      // Obtener el ID token del usuario autenticado
-      const idToken = await result.user.getIdToken();
+        // Obtener el ID token del usuario autenticado
+        const idToken = await result.user.getIdToken();
 
-      // Enviar el ID token al backend para verificar la autenticación
-      const response = await fetch('http://localhost:5001/api/login/github', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              id_token: idToken,  // Enviar el ID token al backend
-          }),
-      });
+        // Enviar el ID token al backend para verificar la autenticación
+        const response = await fetch('http://localhost:5001/api/login/github', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id_token: idToken,  // Enviar el ID token al backend
+            }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-      } else {
-          setError(data.error);  // Mostrar el error devuelto por el backend
-      }
-  } catch (error) {
-      setError('Error inesperado al iniciar sesión con GitHub.');
-      console.error('Error durante el inicio de sesión con GitHub:', error);
-  }
+        if (response.ok) {
+          localStorage.setItem('user_uid', data.user);
+        } else {
+            setError(data.error);  // Mostrar el error devuelto por el backend
+        }
+    } catch (error) {
+        setError('Error inesperado al iniciar sesión con GitHub.');
+    }
 
-  setLoading(false);  // Finalizar el proceso
-};
+    setLoading(false);  // Finalizar el proceso
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user_uid');
+
+    window.location.href = '/login'; 
+  };
 
   return (
     <div className={styles.container}>
@@ -191,6 +199,9 @@ const handleLoginWithGitHub = async () => {
                 </div>
 
                 <button type="button" onClick={handleLogin} className={styles.loginBtn}>Log in</button>
+                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>LoginWithGoogle</button>
+                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>LoginWithGithub</button>
+              
               </form>
             </div>
 
@@ -295,6 +306,9 @@ const handleLoginWithGitHub = async () => {
                 </div>
 
                 <button type="button" onClick={handleSignup} className={styles.loginBtn3}>Create Account</button>
+
+                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>SignUpWithGoogle</button>
+                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>SignUpWithGithub</button>
               </form>
             </div>
           </div>
