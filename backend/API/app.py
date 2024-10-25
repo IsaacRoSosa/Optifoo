@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 from functools import wraps
 import requests
 
-#cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
-cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
+cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
+#cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 
@@ -544,6 +544,7 @@ def create_product():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
 @app.route('/api/getproduct/<product_id>', methods=['GET'])
 def get_product_by_id(product_id):
     try:
@@ -557,6 +558,43 @@ def get_product_by_id(product_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/getproduct_or_create', methods=['POST'])
+def get_product_by_name_or_create():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        category = data.get('category')
+        is_recipy = data.get('beRecipy')
+
+        if not all([name, category]) or not isinstance(is_recipy, bool):
+            return jsonify({"error": "Faltan datos o el valor de 'isRecipy' no es válido."}), 400
+
+        products_ref = db.collection('product')
+        query = products_ref.where('name', '==', name).where('category', '==', category).limit(1)
+        results = query.stream()
+
+        product_doc = next(results, None)
+        if product_doc and product_doc.exists:
+            return jsonify({"message": "Producto encontrado.", "product": product_doc.to_dict()}), 200
+        else:
+            product_ref = db.collection('product').document()
+
+            product_data = {
+                "name": name,
+                "category": category,
+                "idProducto": product_ref.id,  
+                "beRecipy": False,
+                "url_product": ""
+            }
+
+            product_ref.set(product_data)
+
+            return jsonify({"message": "Producto no encontrado, creado exitosamente.", "product": product_data}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/api/getproducts', methods=['GET'])
 def get_all_products():
@@ -792,28 +830,42 @@ def generate_recipy():
             if not ingredients:
                 return jsonify({"error": "Se deben proporcionar ingredientes para generar una receta"}), 400
 
-            content = (      
+            content = (
                 f"Generate a recipe based on the following ingredients: {', '.join(ingredients)}. "
                 f"Take into account the following preferences: {', '.join(preferences)}. "
                 f"Consider the following dietary restrictions: {', '.join(restrictions)}. "
-                "Please generate a recipe in the following format:"+
-                "**Title:** Recipe Name"
-                "**Ingredients:**"+
-                "1. Ingredient Name: Quantity, Description of Ingredient"+
-                "2. Ingredient Name: Quantity, Description of Ingredient"+
-                "..."+
-                "**Steps:**"+
-                "1. Step Description"+
-                "2. Step Description"+
-                "..."+
-                "**Dietary Considerations:**"+
-                "- Dietary Consideration 1"+
-                "- Dietary Consideration 2"+
-                "..."+
-                "Make sure to avoid using markdown for the steps or ingredients."+
-                "Ensure that each ingredient and step is listed with the respective number."+
-                "Always follow this structure without adding any extra symbols like '*' or '_' before or after the list elements."
+                "Please generate a recipe and return it as a valid JSON object with the following format:"
+                "{"
+                "   'title': 'Recipe Name',"
+                "   'ingredients': ["
+                "      {"
+                "         'name': 'Name of ingredient (Two words max)',"
+                "         'quantity': 'Quantity (with units)',"
+                "         'description': 'Description of ingredient (optional)',"
+                "         'category': 'Category of the ingredient (ex. Fruit, Vegetable)'"
+                "      },"
+                "      {"
+                "         'name': 'Name of ingredient',"
+                "         'quantity': 'Quantity (with units)',"
+                "         'description': 'Description of ingredient (optional, if empty use "" )',"
+                "         'category': 'Category of the ingredient (ex. Fruit, Vegetable)'"
+                "      },"
+                "      ..."
+                "   ],"
+                "   'steps': ["
+                "      'Step 1 description',"
+                "      'Step 2 description',"
+                "      ..."
+                "   ],"
+                "   'dietary_considerations': ["
+                "      'Consideration 1',"
+                "      'Consideration 2',"
+                "      ..."
+                "   ]"
+                "}"
+                "Make sure to return the output in JSON format with proper key-value pairs, and avoid using any markdown or symbols like '*' or '_'. Each ingredient should include name, quantity, description (if available), and category. Each step should be listed as a string in the 'steps' array."
             )
+
 
 
             model = ChatGoogleGenerativeAI(model=req_body.get("model","gemini-pro"), api_key = gemini_api)
@@ -831,55 +883,6 @@ def generate_recipy():
         except Exception as e:
             return jsonify({"error": str(e)})
 
-
-@app.route("/api/generate-image", methods=["POST"])
-def generate_recipe_image():
-    if request.method == "POST":
-        try:
-            req_body = request.get_json()
-
-            ingredients = req_body.get("ingredients", [])
-            preferences = req_body.get("preferences", [])
-            restrictions = req_body.get("restrictions",[])
-
-            if isinstance(ingredients, str):
-                ingredients = [ingredients]
-            if isinstance(preferences, str):
-                preferences = [preferences]
-            if isinstance(restrictions, str):
-                restrictions = [restrictions]
-
-            if not ingredients:
-                return jsonify({"error": "Se deben proporcionar ingredientes para generar una receta"}), 400
-
-            content = (      
-                f"Create a dish image based on the following ingredients: {', '.join(ingredients)}. "
-                f"Take into account the following preferences: {', '.join(preferences)}. "
-                f"Consider the following dietary restrictions: {', '.join(restrictions)}. "
-                "Please generate an image that reflects the dish with these ingredients."
-            )
-
-            gemini_api_url = "https://api.gemini.com/v1/images/generations"
-            headers = {
-                "Authorization": f"Bearer {gemini_api}",
-                "Content-Type": "application/json"
-            }
-            data = {
-                "prompt": content,
-                "n": 1,
-                "size": "1024x1024"
-            }
-
-            response = requests.post(gemini_api_url, headers=headers, json=data)
-            if response.status_code != 200:
-                return jsonify({"error": f"Failed to generate image: {response.text}"}), 400
-
-            image_url = response.json()['data'][0]['url']
-
-            return jsonify({"image_url": image_url}), 200
-
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
