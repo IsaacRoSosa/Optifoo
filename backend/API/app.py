@@ -10,8 +10,10 @@ from dotenv import load_dotenv
 from functools import wraps
 import requests
 
-cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
+#cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
+cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+
 
 load_dotenv('.env')
 firebase_api = os.getenv("NEXT_PUBLIC_FIREBASE_API_KEY")
@@ -630,28 +632,43 @@ SECCION DE GET,POST,UPDATE,DELETE de de informacion en el Recipy
 def create_recipy():
     try:
         data = request.get_json()
+        title = data.get('title')
         ingredients = data.get('ingredients')
         time_to_prepare = data.get('timeToPrepare')
         be_public = data.get('bePublic')
         made_by = data.get('madeBy')
+        categories = data.get('categories')
+        steps = data.get('steps')
+
+        if not isinstance(title, str) or not title.strip():
+            return jsonify({"error": "Title must be a non-empty string"}), 400
 
         if not isinstance(ingredients, list) or not all(isinstance(ingredient, dict) for ingredient in ingredients):
             return jsonify({"error": "La lista de ingredients debe ser una lista de diccionarios con 'idProduct' y 'quantity'."}), 400
 
         if not all('idProduct' in ingredient and 'quantity' in ingredient for ingredient in ingredients):
             return jsonify({"error": "Cada ingredient debe tener 'idProduct' y 'quantity'."}), 400
-
+        
         if not isinstance(time_to_prepare, int) or not isinstance(be_public, bool) or not isinstance(made_by, str):
             return jsonify({"error": "Faltan datos o el formato no es correcto."}), 400
+        
+        if not isinstance(categories, list) or not all(isinstance(category, str) for category in categories):
+            return jsonify({"error": "Categories must be a list of strings"}), 400
+        
+        if not isinstance(steps, list) or not all(isinstance(step, str) for step in steps):
+            return jsonify({"error": "Steps must be a list of strings"}), 400
 
         recipy_ref = db.collection('recipy').document()
 
         recipy_data = {
-            "idRecipy": recipy_ref.id,  
+            "idRecipy": recipy_ref.id, 
+            "title": title, 
             "ingredients": ingredients,
             "timeToPrepare": time_to_prepare,
             "bePublic": be_public,
-            "madeBy": made_by
+            "madeBy": made_by,
+            "categories": categories,
+            "steps": steps
         }
 
         recipy_ref.set(recipy_data)
