@@ -3,7 +3,7 @@ import os
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from flask_cors import CORS
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_file, send_from_directory
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv 
@@ -15,6 +15,7 @@ firebase_admin.initialize_app(cred)
 
 load_dotenv('.env')
 firebase_api = os.getenv("NEXT_PUBLIC_FIREBASE_API_KEY")
+gemini_api = os.getenv("NEXT_PUBLIC_GEMINI_API_KEY")
 
 
 db = firestore.client()
@@ -286,7 +287,7 @@ def update_diets(user_uid):
         updated_diets = current_diets + diets
 
         user_ref.update({
-            "diets": updated_diets
+            "diets": firestore.ArrayUnion(updated_diets)
         })
 
         return jsonify({"message": "Diets añadidas correctamente a la lista."}), 200
@@ -516,19 +517,23 @@ def create_product():
         name = data.get('name')
         category = data.get('category')
         is_recipy = data.get('beRecipy')
-        url_imagen = data.get('url_imagen')
 
         if not all([name, category]) or not isinstance(is_recipy, bool):
             return jsonify({"error": "Faltan datos o el valor de 'isRecipy' no es válido."}), 400
+
+        existing_products = db.collection('product').where('name', '==', name).where('category', '==', category).stream()
+
+        if any(existing_products):
+            return jsonify({"error": "El producto ya existe."}), 409
 
         product_ref = db.collection('product').document()
 
         product_data = {
             "name": name,
             "category": category,
-            "idProducto": product_ref.id, 
+            "idProducto": product_ref.id,  
             "beRecipy": is_recipy,
-            "url_product": url_imagen
+            "url_product": ""
         }
 
         product_ref.set(product_data)
@@ -537,7 +542,6 @@ def create_product():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 @app.route('/api/getproduct/<product_id>', methods=['GET'])
 def get_product_by_id(product_id):
     try:
@@ -747,6 +751,43 @@ def delete_recipy(recipy_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+@app.route("/api/generate", methods=["POST"])
+def generate_recipy():
+    if request.method == "POST":
+        try:
+            req_body = request.get_json()
+
+            ingredients = req_body.get("ingredients", [])
+            preferences = req_body.get("preferences", [])
+            restrictions = req_body.get("restrictions",[])
+
+            if not ingredients:
+                return jsonify({"error": "Se deben proporcionar ingredientes para generar una receta"}), 400
+
+            content = (
+                f"Genera una receta basada en los siguientes ingredientes: {', '.join(ingredients)}. "
+                f"Ten en cuenta las siguientes preferencias: {', '.join(preferences)}."
+                f"Ten en cuenta las siguentes restricciones: {', '.join(restrictions)}"
+                "Por favor incluye los pasos para preparar la receta y las cantidades aproximadas de cada ingrediente."
+            )
+
+            model = ChatGoogleGenerativeAI(model=req_body.get("model"))
+
+            message = HumanMessage(content=content)
+
+            response = model.stream([message])
+
+            def stream():
+                for chunk in response:
+                    yield 'data: %s\n\n' % json.dumps({"text": chunk.content})
+
+            return stream(), {'Content-Type': 'text/event-stream'}
+
+        except Exception as e:
+            return jsonify({"error": str(e)})
 
 
 if __name__ == '__main__':

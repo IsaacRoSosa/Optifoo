@@ -7,18 +7,44 @@ export default function RecipeGenerator() {
   const [preferences, setPreferences] = useState('');
   const [restrictions, setRestrictions] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
+  const [error, setError] = useState(null); // Para manejar errores
+  const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
-    const content = `
-      Genera una receta basada en los siguientes ingredientes: ${ingredients}.
-      Ten en cuenta las siguientes preferencias: ${preferences}.
-      Ten en cuenta las siguientes restricciones: ${restrictions}.
-      Por favor incluye los pasos para preparar la receta y las cantidades aproximadas de cada ingrediente.
-    `;
-    console.log(content);
+    if (!ingredients) {
+      setError('Please enter at least one ingredient.');
+      return;
+    }
 
-    // Aquí se haría la llamada al backend para obtener la receta generada.
-    setGeneratedContent(content); // Simulación de respuesta.
+    setLoading(true);
+    setError(null);
+
+    const requestBody = {
+      ingredients: ingredients.split(','),
+      preferences: preferences.split(','),
+      restrictions: restrictions.split(',')
+    };
+
+    try {
+      const response = await fetch('http://localhost:5001/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error generating the recipe');
+      }
+
+      const data = await response.text();
+      setGeneratedContent(data);
+    } catch (err) {
+      setError('Error generating the recipe. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,7 +54,8 @@ export default function RecipeGenerator() {
 
       <div className={styles.inputBox}>
         <label>Ingredients</label>
-        <textarea className={styles.textareaCosa}
+        <textarea
+          className={styles.textareaCosa}
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
           placeholder="Enter ingredients separated by commas"
@@ -37,7 +64,8 @@ export default function RecipeGenerator() {
 
       <div className={styles.inputBox}>
         <label>Preferences</label>
-        <textarea className={styles.textareaCosa}
+        <textarea
+          className={styles.textareaCosa}
           value={preferences}
           onChange={(e) => setPreferences(e.target.value)}
           placeholder="Enter preferences (e.g., Vegan, Low-Carb)"
@@ -47,16 +75,18 @@ export default function RecipeGenerator() {
       <div className={styles.inputBox}>
         <label>Restrictions</label>
         <textarea
+          className={styles.textareaCosa}
           value={restrictions}
           onChange={(e) => setRestrictions(e.target.value)}
           placeholder="Enter dietary restrictions (e.g., Nuts, Gluten-Free)"
         />
       </div>
 
-      <button onClick={handleGenerate} className={styles.generateButton}>
-        GENERATE
+      <button onClick={handleGenerate} className={styles.generateButton} disabled={loading}>
+        {loading ? 'Generating...' : 'GENERATE'}
       </button>
 
+      {error && <p className={styles.error}>{error}</p>}  {}
       {generatedContent && (
         <div className={styles.result}>
           <h3>Generated Recipe:</h3>

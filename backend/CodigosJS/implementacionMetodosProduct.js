@@ -1,4 +1,4 @@
-const createProduct = async (name, category, isRecipy) => {
+const createProduct = async (name, category, beRecipy) => {
     try {
       const response = await fetch('http://localhost:5001/api/addproduct', {
         method: 'POST',
@@ -8,7 +8,7 @@ const createProduct = async (name, category, isRecipy) => {
         body: JSON.stringify({
           name: name,
           category: category,
-          isRecipy: isRecipy
+          beRecipy: beRecipy,
         }),
       });
   
