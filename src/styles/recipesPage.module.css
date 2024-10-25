@@ -1,12 +1,12 @@
 
-/* Contenedor principal */
+
 .mainPageContainer {
   padding: 20px;
   background-color: var(--background-color);
   min-height: 100vh;
 }
 
-/* Contenedor de búsqueda y botón */
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -14,7 +14,7 @@
   margin-bottom: 20px;
 }
 
-/* Barra de búsqueda */
+
 .searchBar {
   width: 70%;
   padding: 12px 16px;
@@ -28,14 +28,14 @@
   margin-right: 10px;
 }
 
-/* Efecto en Hover y Focus */
+
 .searchBar:focus,
 .searchBar:hover {
   border-color: var(--secondary-color);
   box-shadow: 0 0 8px var(--recipes);
 }
 
-/* Botón de acción */
+
 .actionButton {
   background-color: var(--green-button);
   color: var(--clear-text);
@@ -48,7 +48,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover y Active para el botón */
+
 .actionButton:hover {
   background-color: var(--secondary-color);
   transform: scale(1.05);
@@ -57,3 +57,27 @@
 .actionButton:active {
   transform: scale(0.95);
 }
+
+
+@media (max-width: 450px) {
+    .actionButton {
+      padding: 0px 12px; 
+      font-size: 0.8rem; 
+    }
+  
+    .searchBar {
+      width: 60%; 
+      padding: 8px 14px; 
+      font-size: 1rem;
+    }
+  
+    .searchContainer {
+      
+      align-items: stretch; 
+    }
+  
+    .searchBar {
+      margin-bottom: 10px; 
+      margin-right: 0; 
+    }
+  }

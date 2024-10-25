@@ -145,3 +145,20 @@
 .chicken {
   background: linear-gradient(135deg, #FFD86F, #FC6262);
 }
+
+
+@media (max-width: 450px) {
+  .categoryCard {
+    width: 120px; 
+    height: 160px; 
+  }
+
+  .categoryIcon {
+    width: 60px; 
+    height: 60px;
+  }
+
+  .categoryCard p {
+    font-size: 1.2rem;
+  }
+}

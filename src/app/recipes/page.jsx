@@ -35,7 +35,6 @@ const initialRecipes = [
     ingredients: ['Mango', 'Pineapple', 'Strawberry'],
     instructions: 'Mix all ingredients and serve chilled.',
   },
-  // Otras recetas...
 ];
 
 export default function MainPage() {
