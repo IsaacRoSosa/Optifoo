@@ -25,6 +25,34 @@ const createProduct = async (name, category, beRecipy) => {
 };
   
 
+const getProductOrCreate = async (name, category, beRecipy) => {
+  try {
+    const response = await fetch('http://localhost:5001/api/getproduct_or_create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        category: category,
+        beRecipy: beRecipy,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Producto encontrado o creado:', data.product);
+    } else {
+      console.error('Error al buscar o crear el producto:', data.error);
+    }
+  } catch (error) {
+    console.error('Error inesperado:', error);
+  }
+};
+
+
+
 const getProductById = async (productId) => {
     try {
       const response = await fetch(`http://localhost:5001/api/getproduct/${productId}`, {

@@ -7,6 +7,7 @@ import RecipePopup from "@/components/AiPopUp"
 import RecipeContainer from '@/components/RecipeContainer';
 import CookingLoader from '@/components/CookingLoader';
 
+
 function parseGeneratedRecipe(text) {
   function extractSection(text, sectionName) {
     const regex = new RegExp(`\\*\\*${sectionName}:\\*\\*(.*?)(?=\\*\\*|$)`, 's');
@@ -52,7 +53,6 @@ function parseGeneratedRecipe(text) {
   };
 }
 
-
 export default function RecipeGenerator() {
   const [ingredients, setIngredients] = useState('');
   const [preferences, setPreferences] = useState('');
@@ -62,6 +62,7 @@ export default function RecipeGenerator() {
   const [error, setError] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -73,6 +74,9 @@ export default function RecipeGenerator() {
       preferences: preferences.split(','), 
       restrictions: restrictions.split(','), 
     };
+
+
+  const handleGenerate = async (requestBody) => {
 
     try {
       const response = await fetch('http://localhost:5001/api/generate', {
@@ -93,6 +97,7 @@ export default function RecipeGenerator() {
       }
 
       const fullGeneratedText = chunks.join(''); 
+
       const newRecipe = parseGeneratedRecipe(fullGeneratedText);
       setParsedRecipe(newRecipe);
       setGeneratedRecipes(prev => [...prev, newRecipe]);
@@ -102,13 +107,45 @@ export default function RecipeGenerator() {
       setParsedRecipe(parsedRecipe); 
       setShowPopup(true);
 
+      setGeneratedContent(fullGeneratedText);
+
+      console.log(fullGeneratedText)
+      
+
+
     } catch (err) {
       setError('Error generating the recipe. Please try again.');
+      console.error('Error during recipe generation:', err);
     } finally {
       setLoading(false);
     }
   };
 
+
+  const generateContent = async () => {
+    setLoading(true);
+    setError(null);
+    setGeneratedContent(''); 
+    setParsedRecipe(null);  
+    setGeneratedImage(null);
+
+    const requestBody = {
+      ingredients: ingredients.split(','), 
+      preferences: preferences.split(','), 
+      restrictions: restrictions.split(','), 
+    };
+
+    try {
+      await Promise.all([
+        handleGenerate(requestBody)
+      ]);
+    } catch (error) {
+      setError('Error generating the recipe or image. Please try again.');
+      console.error('Error during generation:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -147,7 +184,7 @@ export default function RecipeGenerator() {
         />
       </div>
 
-      <button onClick={handleGenerate} className={styles.generateButton} disabled={loading}>
+      <button onClick={generateContent} className={styles.generateButton} disabled={loading}>
         {loading ? 'Generating...' : 'GENERATE'}
       </button>
 
@@ -159,6 +196,7 @@ export default function RecipeGenerator() {
       {/* 
 
       {error && <p className={styles.error}>{error}</p>}  {}
+
       {generatedContent && (
         <div className={styles.result}>
           <h3>Generated Recipe (Raw):</h3>
@@ -192,4 +230,4 @@ export default function RecipeGenerator() {
      
     </div>
   );
-}
+}}
