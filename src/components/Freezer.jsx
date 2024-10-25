@@ -1,55 +1,50 @@
 import styles from "./../styles/Fridge.module.css";
 import FoodTypeGrid from "./FoodTypeGrid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import DetailedItemView from "./DetailedItemView";
 
 function Freezer() {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [foodData, setFoodData] = useState({
+    meals: [],
+    vegetables: [],
+    fruits: [],
+  });
 
-  const foodData = {
-    meals: [
-      {
-        id: 1,
-        name: "Beef Stew",
-        imageUrl: "/Images/cat/beef.png",
-        amount: 200,
-        expiryIn: 5,
-      },
-      {
-        id: 2,
-        name: "Salad",
-        imageUrl: "/Images/cat/healthy.png",
-        amount: 150,
-        expiryIn: 3,
-      },
-    ],
-    vegetables: [
-      {
-        id: 3,
-        name: "Lettuce",
-        imageUrl: "/Images/cat/vegetable.png",
-        amount: 100,
-        expiryIn: 7,
-      },
-      {
-        id: 4,
-        name: "Carrot",
-        imageUrl: "/Images/cat/vegetable.png",
-        amount: 100,
-        expiryIn: 7,
-      },
-    ],
-    fruits: [
-      {
-        id: 5,
-        name: "Apple",
-        imageUrl: "/Images/cat/fruit.png",
-        amount: 120,
-        expiryIn: 6,
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchFreezerItems = async () => {
+      const userId = "placeholder_user_id";
+
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/user/${userId}/get_products`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          const freezerItems = data.products.filter(
+            (product) => product.storageLocation === "Freezer"
+          );
+          const categorizedItems = {
+            meals: freezerItems.filter((item) => item.category === "Meal"),
+            vegetables: freezerItems.filter(
+              (item) => item.category === "Vegetable"
+            ),
+            fruits: freezerItems.filter((item) => item.category === "Fruit"),
+          };
+
+          setFoodData(categorizedItems);
+        } else {
+          console.error("Error fetching freezer items:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching freezer items:", error);
+      }
+    };
+
+    fetchFreezerItems();
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);

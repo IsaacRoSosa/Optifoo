@@ -1,55 +1,51 @@
 import styles from "./../styles/Fridge.module.css";
 import FoodTypeGrid from "./FoodTypeGrid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import DetailedItemView from "./DetailedItemView";
 
-function Fridge() {
+function Freezer() {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [userProducts, setUserProducts] = useState({
+    meals: [],
+    vegetables: [],
+    fruits: [],
+  });
 
-  const foodData = {
-    meals: [
-      {
-        id: 1,
-        name: "Beef Stew",
-        imageUrl: "/Images/cat/beef.png",
-        amount: 200,
-        expiryIn: 5,
-      },
-      {
-        id: 2,
-        name: "Salad",
-        imageUrl: "/Images/cat/healthy.png",
-        amount: 150,
-        expiryIn: 3,
-      },
-    ],
-    vegetables: [
-      {
-        id: 3,
-        name: "Lettuce",
-        imageUrl: "/Images/cat/vegetable.png",
-        amount: 100,
-        expiryIn: 7,
-      },
-      {
-        id: 4,
-        name: "Carrot",
-        imageUrl: "/Images/cat/vegetable.png",
-        amount: 100,
-        expiryIn: 7,
-      },
-    ],
-    fruits: [
-      {
-        id: 5,
-        name: "Apple",
-        imageUrl: "/Images/cat/fruit.png",
-        amount: 120,
-        expiryIn: 6,
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchUserProducts = async () => {
+      const userId = "placeholder_user_id"; // REEMPLAZAR POR EL ID DEL USUARIO
+
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/user/${userId}/get_products`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          const categorizedProducts = {
+            meals: data.products.filter(
+              (product) => product.category === "Meal"
+            ),
+            vegetables: data.products.filter(
+              (product) => product.category === "Vegetable"
+            ),
+            fruits: data.products.filter(
+              (product) => product.category === "Fruit"
+            ),
+          };
+
+          setUserProducts(categorizedProducts);
+        } else {
+          console.error("Error fetching user products:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user products:", error);
+      }
+    };
+
+    fetchUserProducts();
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -67,21 +63,21 @@ function Fridge() {
 
       <FoodTypeGrid
         title="MEALS"
-        items={foodData.meals}
+        items={userProducts.meals}
         onItemClick={handleItemClick}
       />
       <FoodTypeGrid
         title="VEGETABLES"
-        items={foodData.vegetables}
+        items={userProducts.vegetables}
         onItemClick={handleItemClick}
       />
       <FoodTypeGrid
         title="FRUITS"
-        items={foodData.fruits}
+        items={userProducts.fruits}
         onItemClick={handleItemClick}
       />
     </div>
   );
 }
 
-export default Fridge;
+export default Freezer;

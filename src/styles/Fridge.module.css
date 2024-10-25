@@ -54,6 +54,7 @@
   border-radius: 10px;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .image {

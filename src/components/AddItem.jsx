@@ -1,28 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "@/styles/AddItem.module.css";
 
 function AddItem({ onBackClick }) {
   const [formData, setFormData] = useState({
-    itemName: "",
-    category: "",
-    icon: null,
+    item: "",
     expiryDate: "",
     quantity: "",
     storageLocation: "",
   });
 
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5001/api/getproducts");
+        const data = await response.json();
+
+        if (response.ok) {
+          setProducts(data.products);
+        } else {
+          console.error("Error fetching products:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "icon") {
-      setFormData({ ...formData, icon: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    const userId = "placeholder_user_id"; // AQUI FALTA REEMPLAZARLO POR EL ID DEL USUARIO
+
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/user/${userId}/update_products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            products: [
+              {
+                productId: formData.item,
+                quantity: formData.quantity,
+                expireDate: formData.expiryDate,
+                storedAt: formData.storageLocation,
+              },
+            ],
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Product added successfully:", data.message);
+      } else {
+        console.error("Error adding product:", data.error);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   };
 
   return (
@@ -33,51 +84,25 @@ function AddItem({ onBackClick }) {
 
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <div className={styles.formRow}>
-          <label htmlFor="itemName" className={styles.formLabel}>
-            WHAT ARE YOU STORING
-          </label>
-          <input
-            type="text"
-            id="itemName"
-            name="itemName"
-            className={styles.formInput}
-            value={formData.itemName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.formRow}>
-          <label htmlFor="category" className={styles.formLabel}>
-            SELECT A CATEGORY
+          <label htmlFor="item" className={styles.formLabel}>
+            SELECT A PRODUCT
           </label>
           <select
-            id="category"
-            name="category"
+            id="item"
+            name="item"
             className={styles.formInput}
-            value={formData.category}
+            value={formData.item}
             onChange={handleChange}
           >
             <option value="" disabled>
-              Select a category
+              Select a product
             </option>
-            <option value="vegetable">Vegetable</option>
-            <option value="fruit">Fruit</option>
-            <option value="meat">Meat</option>
+            {products.map((product) => (
+              <option key={product.name} value={product.name}>
+                {product.name}
+              </option>
+            ))}
           </select>
-        </div>
-
-        <div className={styles.formRow}>
-          <label htmlFor="icon" className={styles.formLabel}>
-            SELECT AN ICON
-          </label>
-          <input
-            type="file"
-            id="icon"
-            name="icon"
-            accept="image/*"
-            className={styles.formInput}
-            onChange={handleChange}
-          />
         </div>
 
         <div className={styles.formRow}>

@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from functools import wraps
 import requests
 
-cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
+cred = credentials.Certificate(r"../credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 load_dotenv('.env')
