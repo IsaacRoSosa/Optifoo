@@ -1,0 +1,94 @@
+.slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.categoryCard {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 200px;
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.categoryCard:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo para las imágenes */
+.categoryIcon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain; /* Evita que la imagen se deforme */
+  z-index: 1;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+/* Asegura que el degradado esté como fondo */
+.categoryCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: inherit; /* Aplica el degradado definido para la categoría */
+  z-index: 0;
+}
+
+/* Degradados por categoría */
+.breakfast {
+  background: linear-gradient(135deg, #FFDD99, #FFB677);
+}
+
+.lunch {
+  background: linear-gradient(135deg, #FFC371, #FF5F6D);
+}
+
+.dinner {
+  background: linear-gradient(135deg, #6A11CB, #2575FC);
+}
+
+.vegetarian {
+  background: linear-gradient(135deg, #9EE493, #57CA85);
+}
+
+.meat {
+  background: linear-gradient(135deg, #FF758C, #FF7EB3);
+}
+
+.seafood {
+  background: linear-gradient(135deg, #6DD5FA, #2980B9);
+}
+
+.dessert {
+  background: linear-gradient(135deg, #FAD0C4, #FF9A9E);
+}
+
+.snack {
+  background: linear-gradient(135deg, #FBC2EB, #A18CD1);
+}
+
+.chocolate {
+  background: linear-gradient(135deg, #D4A5A5, #C17C74);
+}
+
+.healthy {
+  background: linear-gradient(135deg, #A1FFCE, #FAFFD1);
+}
