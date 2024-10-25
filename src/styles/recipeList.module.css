@@ -82,10 +82,10 @@
     }
 
     .recipeMessage h2 {
-        font-size: 1.8rem; /* Ajusta el tamaño de la fuente del título */
+        font-size: 1.8rem; 
     }
 
     .recipeMessage p {
-        font-size: 1rem; /* Ajusta el tamaño de la fuente del subtítulo */
+        font-size: 0.9rem; 
     }
 }

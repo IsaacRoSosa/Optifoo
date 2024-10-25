@@ -47,6 +47,10 @@ export default function MainPage() {
     console.log(`Liked recipe: ${recipeName}`);
   };
 
+  const handleCook = (ingredients) => {
+    console.log(`Used ingredients: ${ingredients.join(', ')}`);
+  };
+
   const handleOpenPopup = (recipe) => {
     setSelectedRecipe(recipe);
   };
@@ -112,7 +116,14 @@ export default function MainPage() {
   
         <RecipeList recipes={filteredRecipes} onLike={handleLike} onOpenPopup={handleOpenPopup} />
   
-        {selectedRecipe && <RecipePopup recipe={selectedRecipe} onClose={handleClosePopup} />}
+        {selectedRecipe && (
+            <RecipePopup
+              recipe={selectedRecipe}
+              onClose={handleClosePopup}
+              onLike={handleLike}
+              onCook={handleCook}
+            />
+          )}
       </div>
     );
   }
