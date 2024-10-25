@@ -764,17 +764,42 @@ def generate_recipy():
             preferences = req_body.get("preferences", [])
             restrictions = req_body.get("restrictions",[])
 
+            if isinstance(ingredients, str):
+                ingredients = [ingredients]
+            if isinstance(preferences, str):
+                preferences = [preferences]
+            if isinstance(restrictions, str):
+                restrictions = [restrictions]
+            
+
             if not ingredients:
                 return jsonify({"error": "Se deben proporcionar ingredientes para generar una receta"}), 400
 
-            content = (
-                f"Genera una receta basada en los siguientes ingredientes: {', '.join(ingredients)}. "
-                f"Ten en cuenta las siguientes preferencias: {', '.join(preferences)}."
-                f"Ten en cuenta las siguentes restricciones: {', '.join(restrictions)}"
-                "Por favor incluye los pasos para preparar la receta y las cantidades aproximadas de cada ingrediente."
+            content = (      
+                f"Generate a recipe based on the following ingredients: {', '.join(ingredients)}. "
+                f"Take into account the following preferences: {', '.join(preferences)}. "
+                f"Consider the following dietary restrictions: {', '.join(restrictions)}. "
+                "Please generate a recipe in the following format:"+
+                "**Title:** Recipe Name"
+                "**Ingredients:**"+
+                "1. Ingredient Name: Quantity, Description of Ingredient"+
+                "2. Ingredient Name: Quantity, Description of Ingredient"+
+                "..."+
+                "**Steps:**"+
+                "1. Step Description"+
+                "2. Step Description"+
+                "..."+
+                "**Dietary Considerations:**"+
+                "- Dietary Consideration 1"+
+                "- Dietary Consideration 2"+
+                "..."+
+                "Make sure to avoid using markdown for the steps or ingredients."+
+                "Ensure that each ingredient and step is listed with the respective number."+
+                "Always follow this structure without adding any extra symbols like '*' or '_' before or after the list elements."
             )
 
-            model = ChatGoogleGenerativeAI(model=req_body.get("model"))
+
+            model = ChatGoogleGenerativeAI(model=req_body.get("model","gemini-pro"), api_key = gemini_api)
 
             message = HumanMessage(content=content)
 
