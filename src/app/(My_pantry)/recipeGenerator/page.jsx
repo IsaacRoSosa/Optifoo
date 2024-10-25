@@ -17,7 +17,7 @@ export default function RecipeGenerator() {
   const [showPopup, setShowPopup] = useState(false);
 
   const cleanJSON = (text) => {
-    // Elimina las marcas ``` y otros caracteres innecesarios
+    
     return text.replace(/```json|```|\\n/g, '').trim();
   };
 
@@ -41,7 +41,7 @@ export default function RecipeGenerator() {
       }
 
       const fullGeneratedText = chunks.join('');
-      console.log('Received:', fullGeneratedText); // Depuración
+      console.log('Received:', fullGeneratedText);
 
       const cleanedText = cleanJSON(fullGeneratedText);
       const recipe = JSON.parse(cleanedText); // Parseamos el JSON limpio
@@ -127,7 +127,12 @@ export default function RecipeGenerator() {
 
       {loading && <CookingLoader />}
 
+      <div className={styles.containerRecip}>
+
       <RecipeContainer recipes={generatedRecipes} onOpenPopup={onOpenPopup} />
+      </div>
+
+
 
       {showPopup && parsedRecipe && (
         <AiPopUp recipe={parsedRecipe} onClose={onClosePopup} />

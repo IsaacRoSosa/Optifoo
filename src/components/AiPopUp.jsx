@@ -43,7 +43,7 @@ export default function AiPopUp({ recipe, onClose }) {
         </div>
 
         <div className={styles.buttonGroup}>
-          <button className={styles.cookButton}>Cook</button>
+          <button className={styles.cookButton}>SAVE </button>
         </div>
       </div>
     </div>

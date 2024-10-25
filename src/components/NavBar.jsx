@@ -16,9 +16,6 @@ export default function NavBar() {
           <Link href="/pantry">Pantry</Link>
         </li>
         <li className={styles.nav_item}>
-          <Link href="/wastePrevented">Waste Monitor</Link>
-        </li>
-        <li className={styles.nav_item}>
           <Link href="/recipes">Recipes</Link>
         </li>
         <li className={styles.nav_item}>
