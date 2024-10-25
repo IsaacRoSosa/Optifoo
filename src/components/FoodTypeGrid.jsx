@@ -11,7 +11,7 @@ function FoodTypeGrid({ title, items, onItemClick }) {
             className={styles.item}
             onClick={() => onItemClick(item)}
           >
-            <img src={item.imageUrl} className={styles.image} />
+            <img src={item.url_product} className={styles.image} />
             <div>{item.productId}</div>
             <div>{item.quantity}g</div>
           </div>
