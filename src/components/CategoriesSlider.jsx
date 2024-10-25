@@ -6,11 +6,11 @@ export default function CategoriesSlider({ categories, onSelect }) {
       {categories.map((category) => (
         <div
           key={category.name}
-          className={styles.categoryCard}
+          className={`${styles.categoryCard} ${styles[category.name.toLowerCase()]}`}
           onClick={() => onSelect(category.name)}
         >
-          <img style={styles.icon} src={category.icon} alt={category.name} />
-          <p>{category.name}</p>
+          <img className={styles.categoryIcon} src={category.icon} alt={category.name} />
+          <p className={styles.title}>{category.name}</p>
         </div>
       ))}
     </div>
