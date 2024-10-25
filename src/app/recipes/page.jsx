@@ -93,6 +93,7 @@ export default function MainPage({ userId }) {
     { name: 'Pork', icon: '/Images/cat/pork.png' },
     { name: 'Mexican', icon: '/Images/cat/mexican.png' },
     { name: 'Healthy', icon: '/Images/cat/healthy.png' },
+    {name: 'Glueten Free', icon: 'https://cdn-icons-png.flaticon.com/512/5009/5009812.png'},
   ];
 
   return (

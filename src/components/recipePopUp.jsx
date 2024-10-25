@@ -19,8 +19,8 @@ export default function RecipePopup({ recipe, onClose, onLike, onCook }) {
           <button
             className={styles.heartButton}
             onClick={(e) => {
-              e.stopPropagation(); // Evitar cierre del popup
-              onLike(recipe.title); // Manejar "like" del usuario
+              e.stopPropagation();
+              onLike(recipe.title);
             }}
           >
             ❤️
@@ -33,7 +33,7 @@ export default function RecipePopup({ recipe, onClose, onLike, onCook }) {
           <div className={styles.infoBlock}>
             <p className={styles.info}>
               <img src="/Images/icons/utensils.png" alt="category" className={styles.icon} />
-              {recipe.categories.join(', ')}
+              {recipe.categories ? recipe.categories.join(', ') : 'Optichef'}
             </p>
             <p className={styles.info}>
               <img src="/Images/icons/time.png" alt="time" className={styles.icon} />

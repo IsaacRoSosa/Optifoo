@@ -4,9 +4,12 @@ import styles from '@/styles/recipeGenerator.module.css';
 import { streamResponseChunks } from '../../../../backend/web/gemini-api';
 import AiPopUp from '@/components/AiPopUp';
 import CookingLoader from '@/components/CookingLoader';
+import { useAuth } from '@/hooks/useAuth'; 
 import RecipeContainer from '@/components/RecipeContainer';
 
 export default function RecipeGenerator() {
+  const { user } = useAuth(); // Hook de autenticación
+  const userId = user?.id || localStorage.getItem('user_uid'); // ID del usuario autenticado
   const [ingredients, setIngredients] = useState('');
   const [preferences, setPreferences] = useState('');
   const [restrictions, setRestrictions] = useState('');
@@ -18,7 +21,14 @@ export default function RecipeGenerator() {
 
   const cleanJSON = (text) => {
     
-    return text.replace(/```json|```|\\n/g, '').trim();
+    const cleaned = text
+    .replace(/```json|```/g, '') // Remueve etiquetas de bloque
+    .replace(/\\n/g, '') // Remueve saltos de línea
+    .trim(); // Elimina espacios al inicio y final
+
+
+
+    return cleaned;
   };
 
   const handleGenerate = async (requestBody) => {
@@ -44,6 +54,8 @@ export default function RecipeGenerator() {
       console.log('Received:', fullGeneratedText);
 
       const cleanedText = cleanJSON(fullGeneratedText);
+      console.log('Cleaned Text:', cleanedText);
+
       const recipe = JSON.parse(cleanedText); // Parseamos el JSON limpio
 
       setGeneratedRecipes((prev) => [...prev, recipe]);
@@ -54,6 +66,39 @@ export default function RecipeGenerator() {
       setLoading(false);
     }
   };
+
+  const saveRecipe = async (recipe) => {
+    const newRecipe = {
+      title: recipe.title,
+      ingredients: recipe.ingredients,
+      timeToPrepare: "",
+      bePublic: true,  // Receta pública
+      madeBy: userId || 'OptiChef',  // Propietario de la receta
+      categories: ['OptiChef'],
+      steps: recipe.steps,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5001/api/addrecipy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newRecipe),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Receta guardada:', data);
+      } else {
+        console.error('Error al guardar la receta:', data);
+      }
+    } catch (error) {
+      console.error('Error inesperado al guardar la receta:', error);
+    }
+  };
+
+
+
 
   const generateContent = async () => {
     setLoading(true);
@@ -129,13 +174,13 @@ export default function RecipeGenerator() {
 
       <div className={styles.containerRecip}>
 
-      <RecipeContainer recipes={generatedRecipes} onOpenPopup={onOpenPopup} />
+        <RecipeContainer recipes={generatedRecipes} onOpenPopup={onOpenPopup} />
       </div>
 
 
 
       {showPopup && parsedRecipe && (
-        <AiPopUp recipe={parsedRecipe} onClose={onClosePopup} />
+        <AiPopUp recipe={parsedRecipe} onClose={onClosePopup} onSave={saveRecipe}/>
       )}
     </div>
   );

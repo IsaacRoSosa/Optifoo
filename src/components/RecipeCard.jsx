@@ -36,7 +36,8 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
           </p>
           <p className={styles.recipeCategory}>
             <img className={styles.icon} src="/Images/icons/utensils.png" alt="category" />
-            {recipe.categories.join(', ')}
+            {recipe.categories ? recipe.categories.join(', ') : 'No categories'}
+
           </p>
         </div>
       </div>

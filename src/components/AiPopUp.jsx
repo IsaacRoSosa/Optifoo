@@ -1,6 +1,6 @@
 import styles from '@/styles/AirecipePopup.module.css';
 
-export default function AiPopUp({ recipe, onClose }) {
+export default function AiPopUp({ recipe, onClose, onSave }) {
   if (!recipe) return null;
 
   return (
@@ -43,7 +43,7 @@ export default function AiPopUp({ recipe, onClose }) {
         </div>
 
         <div className={styles.buttonGroup}>
-          <button className={styles.cookButton}>SAVE </button>
+          <button className={styles.cookButton} onClick={() => onSave(recipe)}>SAVE </button>
         </div>
       </div>
     </div>
