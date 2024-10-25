@@ -10,8 +10,12 @@ from dotenv import load_dotenv
 from functools import wraps
 import requests
 
+<<<<<<< HEAD
 #cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
 cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
+=======
+cred = credentials.Certificate(r"../credentials/serviceAccountKey.json")
+>>>>>>> pantry
 firebase_admin.initialize_app(cred)
 
 
