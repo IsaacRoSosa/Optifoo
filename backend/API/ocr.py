@@ -2,38 +2,44 @@ import cv2
 import easyocr
 import re
 
-def preprocesar_imagen(img):
-    """Aplica preprocesamiento para mejorar la lectura del OCR."""
-    gris = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    filtrada = cv2.bilateralFilter(gris, 9, 75, 75)
-    _, binarizada = cv2.threshold(filtrada, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+def preprocess_image(img):
+    """Applies preprocessing to enhance OCR readability."""
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    filtered = cv2.bilateralFilter(gray, 9, 75, 75)
+    _, binarized = cv2.threshold(filtered, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-    escala = 1.5
-    ancho = int(binarizada.shape[1] * escala)
-    alto = int(binarizada.shape[0] * escala)
-    img_redimensionada = cv2.resize(binarizada, (ancho, alto), interpolation=cv2.INTER_LINEAR)
+    scale = 1.5
+    width = int(binarized.shape[1] * scale)
+    height = int(binarized.shape[0] * scale)
+    resized_img = cv2.resize(binarized, (width, height), interpolation=cv2.INTER_LINEAR)
 
-    return img_redimensionada
+    return resized_img
 
-def limpiar_producto(producto):
-    """Limpia caracteres inesperados al inicio del nombre del producto."""
-    producto = re.sub(r'^\W*\b\w?\b\s*', '', producto)
-    return producto.strip()
+def clean_product_name(product_name):
+    """Cleans unexpected characters at the beginning of the product name."""
+    product_name = re.sub(r'^\W*\b\w?\b\s*', '', product_name)
+    return product_name.strip()
 
-def extraer_texto(img):
-    """Extrae el nombre del artículo y su cantidad, y retorna un JSON con los resultados."""
+def extract_text(img):
+    """Extracts the product name and quantity, and returns a JSON with the results."""
     reader = easyocr.Reader(['en', 'es'])
 
-    img_preprocesada = preprocesar_imagen(img)
+    preprocessed_img = preprocess_image(img)
 
-    resultado = reader.readtext(img_preprocesada, detail=0)
+    result = reader.readtext(preprocessed_img, detail=0)
 
-    texto_filtrado = [linea for linea in resultado if not any(palabra in linea.lower() for palabra in ['ticket', 'compra', 'abarrotes'])]
-    texto = ' '.join(texto_filtrado)
+    filtered_text = [
+        line for line in result 
+        if not any(word in line.lower() for word in ['ticket', 'purchase', 'groceries'])
+    ]
+    text = ' '.join(filtered_text)
 
-    patron = r'([A-Za-záéíóúñÑ\s]+)\s(\d+)'
-    coincidencias = re.findall(patron, texto)
+    pattern = r'([A-Za-záéíóúñÑ\s]+)\s(\d+)'
+    matches = re.findall(pattern, text)
 
-    productos = [{"elemento": limpiar_producto(producto), "cantidad": int(cantidad)} for producto, cantidad in coincidencias]
+    products = [
+        {"element": clean_product_name(product), "quantity": int(quantity)} 
+        for product, quantity in matches
+    ]
 
-    return productos
+    return products
