@@ -7,7 +7,7 @@
   overflow: hidden;
 }
 
-h1 {
+.title {
   position: relative;
   margin: 0 auto;
   top: 25vh;
