@@ -12,9 +12,9 @@ import requests
 
 
 #cred = credentials.Certificate(r"e://Optifoo/backend/credentials/serviceAccountKey.json")
-cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
+#cred = credentials.Certificate("/Users/isaacrs/Desktop/Profesionalismo/Proyects/Optifoo/backend/credentials/serviceAccountKey.json")
 
-#cred = credentials.Certificate(r"../credentials/serviceAccountKey.json")
+cred = credentials.Certificate(r"../credentials/serviceAccountKey.json")
 
 firebase_admin.initialize_app(cred)
 
