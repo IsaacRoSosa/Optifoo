@@ -1,6 +1,6 @@
 import styles from '@/styles/AirecipePopup.module.css';
 
-export default function RecipePopup({ recipe, onClose }) {
+export default function AiPopUp({ recipe, onClose }) {
   if (!recipe) return null;
 
   return (
