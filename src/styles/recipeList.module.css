@@ -1,0 +1,91 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
+
+.recipeListContainer {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .recipeMessage {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+  }
+  
+  .titleCont {
+    text-align: left;
+    width: 100%;
+    margin-left: 1%;
+  }
+  .subtitleCont {
+ 
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 1%;
+}
+  
+  .recipeMessage h2 {
+    font-family: "Source Serif 4", serif;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: 550;
+    color: black;
+  }
+  
+  .recipeMessage p {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 1.5rem;
+    color: #666;
+  }
+  
+
+  .recipeCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; 
+    justify-items: center;
+    margin-top: 0px;
+}
+
+@media (max-width: 768px) {
+    .titleCont {
+        width: 100%; 
+    }
+
+    .recipeMessage h2 {
+        font-size: 2rem; 
+    }
+
+    .recipeMessage p {
+        font-size: 1.2rem; 
+    }
+
+    .subtitleCont {
+        width: 100%; 
+
+    }
+      
+  .titleCont {
+    width: 100%;
+    margin-left: 1%;
+  }
+      
+}
+
+@media (max-width: 450px) {
+    .recipeCards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .recipeMessage h2 {
+        font-size: 1.8rem; /* Ajusta el tamaño de la fuente del título */
+    }
+
+    .recipeMessage p {
+        font-size: 1rem; /* Ajusta el tamaño de la fuente del subtítulo */
+    }
+}

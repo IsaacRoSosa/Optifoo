@@ -1,0 +1,86 @@
+.container {
+  background-color: #5d3d57;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  color: #fefae2;
+  text-align: center;
+}
+
+.backButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fefae2;
+  cursor: pointer;
+}
+
+.itemName {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.itemImage {
+  width: 120px;
+  height: 120px;
+  margin: 10px 0;
+}
+
+.amountControl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.amountControl button {
+  background-color: #e63946;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.amountControl span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fefae2;
+}
+
+.expiryDays {
+  display: inline-block;
+  background-color: #2a9d8f;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actionButton {
+  background-color: #5d3d57;
+  color: #fefae2;
+  border: 1px solid #fefae2;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 45%;
+}
+
+.actionButton:hover {
+  background-color: #764a6e;
+}

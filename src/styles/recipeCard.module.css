@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.recipeCard {
+  position: relative;
+  width: 280px;
+  margin: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.362);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+  height: fit-content;
+  min-height: 270px;
+}
+
+.recipeCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.recipeImageContainer {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+
+.recipeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+
+.heartButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 8px;
+  border-radius: 50%; 
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.heartButton:hover {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.liked {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.recipeDetails {
+  padding: 15px;
+  text-align: left;
+}
+
+.recipeTitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  margin: 5px 0;
+  color: #333;
+}
+
+.recipeInfo {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #666;
+  margin-top: 10px;
+}
+
+.recipeTime,
+.recipeCategory {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 5px;
+}
+
+.recipeTime span,
+.recipeCategory span {
+  margin-right: 5px;
+}
+
+.icon{width: 20px; height: 20px;}
+
+
+@media (max-width: 450px) {
+  .recipeCard {
+    width: 100%; 
+    margin: 10px 0;
+    min-height: 250px;
+  }
+
+  .recipeImageContainer {
+    height: 120px;
+  }
+
+  .recipeTitle {
+    font-size: 14px; 
+  }
+
+  .recipeInfo {
+    font-size: 11px; 
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .icon {
+    width: 14px; 
+    height: 14px; 
+  }
+}

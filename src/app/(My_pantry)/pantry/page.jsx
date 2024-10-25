@@ -1,5 +1,6 @@
+"use client";
 import { useState } from "react";
-import styles from "./../../styles/Pantry.module.css";
+import styles from "@/styles/Pantry.module.css";
 import ButtonGroup from "@/components/ButtonGroup";
 import Fridge from "@/components/Fridge";
 import AddItem from "@/components/AddItem";
