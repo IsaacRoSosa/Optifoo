@@ -1,50 +1,27 @@
 import styles from "./../styles/Fridge.module.css";
 import FoodTypeGrid from "./FoodTypeGrid";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "./Modal";
 import DetailedItemView from "./DetailedItemView";
 
-function Freezer() {
+function Freezer({ products }) {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [foodData, setFoodData] = useState({
-    meals: [],
-    vegetables: [],
-    fruits: [],
-  });
 
-  useEffect(() => {
-    const fetchFreezerItems = async () => {
-      const userId = "placeholder_user_id";
-
-      try {
-        const response = await fetch(
-          `http://localhost:5001/api/user/${userId}/get_products`
-        );
-        const data = await response.json();
-
-        if (response.ok) {
-          const freezerItems = data.products.filter(
-            (product) => product.storageLocation === "Freezer"
-          );
-          const categorizedItems = {
-            meals: freezerItems.filter((item) => item.category === "Meal"),
-            vegetables: freezerItems.filter(
-              (item) => item.category === "Vegetable"
-            ),
-            fruits: freezerItems.filter((item) => item.category === "Fruit"),
-          };
-
-          setFoodData(categorizedItems);
-        } else {
-          console.error("Error fetching freezer items:", data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching freezer items:", error);
-      }
-    };
-
-    fetchFreezerItems();
-  }, []);
+  const categorizedProducts = {
+    meals: products.filter((product) => product.category === "Meal"),
+    vegetables: products.filter((product) => product.category === "Vegetable"),
+    fruits: products.filter((product) => product.category === "Fruit"),
+    seafood: products.filter((product) => product.category === "Seafood"),
+    meat: products.filter((product) => product.category === "Meat"),
+    fish: products.filter((product) => product.category === "Fish"),
+    grain: products.filter((product) => product.category === "Grain"),
+    dairy: products.filter((product) => product.category === "Dairy"),
+    protein: products.filter((product) => product.category === "Protein"),
+    oil: products.filter((product) => product.category === "Oil"),
+    nuts: products.filter((product) => product.category === "Nuts"),
+    mushroom: products.filter((product) => product.category === "Mushroom"),
+    legume: products.filter((product) => product.category === "Legume"),
+  };
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -62,17 +39,67 @@ function Freezer() {
 
       <FoodTypeGrid
         title="MEALS"
-        items={foodData.meals}
+        items={categorizedProducts.meals}
         onItemClick={handleItemClick}
       />
       <FoodTypeGrid
         title="VEGETABLES"
-        items={foodData.vegetables}
+        items={categorizedProducts.vegetables}
         onItemClick={handleItemClick}
       />
       <FoodTypeGrid
         title="FRUITS"
-        items={foodData.fruits}
+        items={categorizedProducts.fruits}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="SEAFOOD"
+        items={categorizedProducts.seafood}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="MEAT"
+        items={categorizedProducts.meat}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="FISH"
+        items={categorizedProducts.fish}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="GRAIN"
+        items={categorizedProducts.grain}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="DAIRY"
+        items={categorizedProducts.dairy}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="PROTEIN"
+        items={categorizedProducts.protein}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="OIL"
+        items={categorizedProducts.oil}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="NUTS"
+        items={categorizedProducts.nuts}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="MUSHROOM"
+        items={categorizedProducts.mushroom}
+        onItemClick={handleItemClick}
+      />
+      <FoodTypeGrid
+        title="LEGUME"
+        items={categorizedProducts.legume}
         onItemClick={handleItemClick}
       />
     </div>

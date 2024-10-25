@@ -4,6 +4,7 @@ import styles from "@/styles/AddItem.module.css";
 function AddItem({ onBackClick }) {
   const [formData, setFormData] = useState({
     item: "",
+    category: "",
     expiryDate: "",
     quantity: "",
     storageLocation: "",
@@ -32,16 +33,28 @@ function AddItem({ onBackClick }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    if (name === "item") {
+      const selectedProduct = products.find(
+        (product) => product.name === value
+      );
+      setFormData((prevData) => ({
+        ...prevData,
+        item: value,
+        category: selectedProduct ? selectedProduct.category : "",
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = "placeholder_user_id"; // AQUI FALTA REEMPLAZARLO POR EL ID DEL USUARIO
+    const userId = "MtlWXrrdTQhg1Z080JCGAb4Mtfn1";
 
     try {
       const response = await fetch(
@@ -55,6 +68,7 @@ function AddItem({ onBackClick }) {
             products: [
               {
                 productId: formData.item,
+                category: formData.category,
                 quantity: formData.quantity,
                 expireDate: formData.expiryDate,
                 storedAt: formData.storageLocation,
@@ -68,6 +82,7 @@ function AddItem({ onBackClick }) {
 
       if (response.ok) {
         console.log("Product added successfully:", data.message);
+        onBackClick();
       } else {
         console.error("Error adding product:", data.error);
       }
@@ -76,12 +91,15 @@ function AddItem({ onBackClick }) {
     }
   };
 
+  const isFormValid =
+    formData.item &&
+    formData.category &&
+    formData.expiryDate &&
+    formData.quantity &&
+    formData.storageLocation;
+
   return (
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={onBackClick}>
-        ←
-      </button>
-
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <div className={styles.formRow}>
           <label htmlFor="item" className={styles.formLabel}>
@@ -98,8 +116,11 @@ function AddItem({ onBackClick }) {
               Select a product
             </option>
             {products.map((product) => (
-              <option key={product.name} value={product.name}>
-                {product.name}
+              <option
+                key={product.productId || product.name}
+                value={product.name}
+              >
+                {product.name} ({product.category})
               </option>
             ))}
           </select>
@@ -144,12 +165,19 @@ function AddItem({ onBackClick }) {
             value={formData.storageLocation}
             onChange={handleChange}
           >
+            <option value="" disabled>
+              Select a storage location
+            </option>
             <option value="Fridge">Fridge</option>
             <option value="Freezer">Freezer</option>
           </select>
         </div>
 
-        <button type="submit" className={styles.addButton}>
+        <button
+          type="submit"
+          className={styles.addButton}
+          disabled={!isFormValid}
+        >
           ADD ITEM
         </button>
       </form>
