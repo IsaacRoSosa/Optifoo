@@ -42,8 +42,10 @@ const extractTextFromImage = async (imageFile, setResponse) => {
   }
 };
 
+import { useAuth } from "@/hooks/useAuth";
 
 function AddItem({ onBackClick }) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     item: "",
     category: "",
@@ -83,7 +85,7 @@ function AddItem({ onBackClick }) {
       }
     };
 
-    fetchProducts();
+    fetchProducts(); 
   }, []);
 
   const handleChange = (e) => {
@@ -109,11 +111,11 @@ function AddItem({ onBackClick }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = "MtlWXrrdTQhg1Z080JCGAb4Mtfn1";
+    const userUid = user?.id || localStorage.getItem("user_uid");
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/user/${userId}/update_products`,
+        `http://localhost:5001/api/user/${userUid}/update_products`,
         {
           method: "POST",
           headers: {
@@ -171,10 +173,7 @@ function AddItem({ onBackClick }) {
               Select a product
             </option>
             {products.map((product) => (
-              <option
-                key={product.productId || product.name}
-                value={product.name}
-              >
+              <option key={product.idProducto} value={product.name}>
                 {product.name} ({product.category})
               </option>
             ))}

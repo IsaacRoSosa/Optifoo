@@ -76,7 +76,9 @@ export default function MainPage({ userId }) {
   const filteredRecipes = recipes.filter((recipe) => {
     const matchesCategory =
       selectedCategories.length === 0 ||
-      recipe.categories.some((cat) => selectedCategories.includes(cat)); // Verifica si hay categorías coincidentes
+      (Array.isArray(recipe.categories) && 
+       recipe.categories.some((cat) => selectedCategories.includes(cat))); // Verifica si hay categorías
+  
     const matchesSearch = recipe.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -93,6 +95,7 @@ export default function MainPage({ userId }) {
     { name: 'Pork', icon: '/Images/cat/pork.png' },
     { name: 'Mexican', icon: '/Images/cat/mexican.png' },
     { name: 'Healthy', icon: '/Images/cat/healthy.png' },
+    {name: 'Glueten Free', icon: 'https://cdn-icons-png.flaticon.com/512/5009/5009812.png'},
   ];
 
   return (

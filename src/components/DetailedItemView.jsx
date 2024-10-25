@@ -13,12 +13,12 @@ function DetailedItemView({ item, onBack }) {
 
   const daysUntilExpiration = calculateDaysUntilExpiration();
 
-  const userId = "MtlWXrrdTQhg1Z080JCGAb4Mtfn1";
+  const userUid = "MtlWXrrdTQhg1Z080JCGAb4Mtfn1";
 
   const updateAmount = async (newAmount) => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/user/${userId}/update_products`,
+        `http://localhost:5001/api/user/${userUid}/update_products`,
         {
           method: "POST",
           headers: {
@@ -51,7 +51,7 @@ function DetailedItemView({ item, onBack }) {
   const handleFinished = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/user/${userId}/delete_product`,
+        `http://localhost:5001/api/user/${userUid}/delete_product`,
         {
           method: "DELETE",
           headers: {
@@ -77,7 +77,7 @@ function DetailedItemView({ item, onBack }) {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/user/${userId}/update_products`,
+        `http://localhost:5001/api/user/${userUid}/update_products`,
         {
           method: "POST",
           headers: {

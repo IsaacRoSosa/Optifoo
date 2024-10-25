@@ -1,77 +1,97 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: var(--background-color);
-    min-height: 100vh;
-  }
-  
-  .title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-bottom: 5px;
-  }
-  
-  .subtitle {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--green-text);
-    margin-bottom: 20px;
-  }
-  
-  .inputBox {
-    width: 80%;
-    max-width: 500px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .inputBox label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--green-text);
-  }
-  
-  .textareaCosa {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid var(--primary-color);
-    resize: none;
-    min-height: 80px;
-  }
-  
-  .generateButton {
-    background-color: var(--green-button);
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-  }
-  
-  .generateButton:hover {
-    background-color: #018a00;
-  }
-  
-  .result {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: black;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 500px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .containerRecip{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  text-align: center;
+}
 
-    width: 100%;
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
 
-  }
+.subtitle {
+  font-size: 1.8rem;
+  color: var(--green-text);
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.inputBox {
+  width: 80%;
+  max-width: 500px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputBox label {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-top: 0px;
+  
+}
+
+.textareaCosa {
+  padding: 12px;
+  border-radius: 8px;
+  resize: none;
+  min-height: 100px;
+  font-size: 1rem;
+  background-color: white;
+  border: 5px dotted var(--text-color-brown);
+  color: black;
+
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.textareaCosa:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+.generateButton {
+  background-color: var(--green-button);
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 15px;
+}
+
+.generateButton:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+.result {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.containerRecip {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+
+  margin-top: 0px;
+
+}
