@@ -1,22 +1,24 @@
 .popupOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8); 
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 10;
 }
 
 .popupContent {
-  background: #9DCD6D;
+  margin-top: 10vh;
+  background-color: #f1f5e6;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 800px;
 
-  border-radius: 20px;
-  width: 85%;
-  max-width: 700px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
-  position: relative;
+  min-height: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  position: relative;
 }
 
 .closeButton {
@@ -27,96 +29,179 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: var(--primary-color);
+  color: #ffffff;
+  z-index: 11;
+  transition: 0.4s;
 }
 
-.recipeTitle {
-  text-align: center;
-  font-size: 2.5rem;
-  padding: 10px;
+.closeButton:hover {
+  color: #ff5a5a;
+  scale: 1.1;
+}
 
-  color: black;
-  font-weight: bold;
+.close{
+  width: 30px;
+  height: 30px;
+}
+
+
+.recipeImageContainer {
+  position: relative;
+  width: 100%;
+  height: 250px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .recipeImage {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+}
 
+.heartButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.heartButton:hover {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.recipeDetails {
+  padding: 10px;
+
+  overflow-y: auto; 
+}
+
+.recipeTitle {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .infoBlock {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 10px;
   font-weight: 600;
-  margin-bottom: 15px;
-  color: var(--green-text);
+  color: #666;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 
 .columns {
   display: flex;
-  gap: 30px;
-  margin-top: 10px;
+
 }
 
-.ingredients,
-.instructions {
-  flex: 1;
+.ingredients, .instructions {
+  height: 200px;
+  overflow-y: auto; 
 }
 
-.ingredients h3,
-.instructions h3 {
-  color: var(--primary-color);
-  font-size: 1.5rem;
+.subTitles {
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 10px;
+  color: #283618;
+}
+
+.ingredients {
+  width: 40%;
+
+
+}
+
+.instructions {
+  width: 60%;
+
 }
 
 .listIngredients {
   list-style-type: disc;
-  padding-left: 20px;
   margin: 0;
+  padding-left: 30px;
 }
 
-.buttonGroup {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-}
-
-.likeButton,
-.cookButton {
-  width: 48%;
-  padding: 15px;
-  border-radius: 12px;
-  border: none;
+.yap{
+  color: black;
   font-size: 1.2rem;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-.likeButton {
-  background-color: #ff5a5a;
-  color: white;
-}
-
-.likeButton:hover {
-  background-color: #e04747;
 }
 
 .cookButton {
-  background-color: var(--green-button);
+  width: 100%;
+  padding: 15px;
+  background-color: #269224;
   color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-self: center;
+  justify-self: center;
 }
 
 .cookButton:hover {
-  background-color: #018a00;
+  background-color: #1b6e17;
 }
 
 
-.icon{
-  width: 30px;
-  height: 30px;
+@media (max-width: 450px) {
+  .recipeImageContainer {
+    height: 200px;
+  }
+
+  .recipeTitle {
+    font-size: 1.5rem;
+  }
+
+  .infoBlock {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+
+
+  .ingredients, .instructions {
+    width: 100%;
+    height: 150px;
+    min-height: 00px;
+    border-top: 5px dotted var(--text-color-brown);  
+  }
+
+  .popupContent {
+    height: fit-content;
+    min-height: 250px;
+  }
+
+
+.close{
+  width: 45px;
+  height: 45px;
+}
+
+
 }
