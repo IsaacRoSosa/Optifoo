@@ -25,3 +25,4 @@ export default function RecipeList({ recipes, onLike, onOpenPopup }) {
     </div>
   );
 }
+ 

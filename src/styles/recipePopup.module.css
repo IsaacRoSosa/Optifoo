@@ -1,20 +1,122 @@
 .popupOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popupContent {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 500px;
-  }
-  
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popupContent {
+  background: #9DCD6D;
+
+  border-radius: 20px;
+  width: 85%;
+  max-width: 700px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.recipeTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  padding: 10px;
+
+  color: black;
+  font-weight: bold;
+}
+
+.recipeImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+
+  margin-bottom: 10px;
+}
+
+.infoBlock {
+  display: flex;
+  justify-content: space-around;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--green-text);
+}
+
+.columns {
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.ingredients,
+.instructions {
+  flex: 1;
+}
+
+.ingredients h3,
+.instructions h3 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.listIngredients {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.likeButton,
+.cookButton {
+  width: 48%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.likeButton {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.likeButton:hover {
+  background-color: #e04747;
+}
+
+.cookButton {
+  background-color: var(--green-button);
+  color: white;
+}
+
+.cookButton:hover {
+  background-color: #018a00;
+}
+
+
+.icon{
+  width: 30px;
+  height: 30px;
+}
