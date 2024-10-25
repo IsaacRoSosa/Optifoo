@@ -1,31 +1,42 @@
-const createProduct = async (name, category, beRecipy) => {
-    try {
-      const response = await fetch('http://localhost:5001/api/addproduct', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          category: category,
-          beRecipy: beRecipy,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        console.log('Producto creado:', data.product);
-      } else {
-        console.error('Error al crear el producto:', data.error);
-      }
-    } catch (error) {
-      console.error('Error inesperado:', error);
-    }
-};
-  
+const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy, steps) => {
+  try {
 
-const getProductOrCreate = async (name, category, beRecipy) => {
+    const updatedIngredients = await Promise.all(ingredients.map(async (ingredient) => {
+      const idProducto = await getProductOrCreate(ingredient.name, ingredient.category, false); 
+      return {
+        ...ingredient, 
+        idProduct: idProducto 
+      };
+    }));
+
+    const response = await fetch('http://localhost:5001/api/addrecipy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: title,
+        ingredients: updatedIngredients, 
+        timeToPrepare: timeToPrepare,
+        bePublic: bePublic,
+        madeBy: madeBy,
+        steps: steps
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Receta creada:', data);
+    } else {
+      console.error('Error al crear la receta:', data.error);
+    }
+  } catch (error) {
+    console.error('Error inesperado:', error);
+  }
+};
+
+const getProductOrCreate = async (name, category, beRecipy) => { 
   try {
     const response = await fetch('http://localhost:5001/api/getproduct_or_create', {
       method: 'POST',
@@ -43,6 +54,7 @@ const getProductOrCreate = async (name, category, beRecipy) => {
 
     if (response.ok) {
       console.log('Producto encontrado o creado:', data.product);
+      return data.product.idProducto; 
     } else {
       console.error('Error al buscar o crear el producto:', data.error);
     }
@@ -50,6 +62,7 @@ const getProductOrCreate = async (name, category, beRecipy) => {
     console.error('Error inesperado:', error);
   }
 };
+
 
 
 

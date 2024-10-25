@@ -675,9 +675,10 @@ def create_recipy():
         time_to_prepare = data.get('timeToPrepare')
         be_public = data.get('bePublic')
         made_by = data.get('madeBy')
-        categories = data.get('categories')
+        categories = data.get('dietary_considerations')
         steps = data.get('steps')
 
+        '''
         if not isinstance(title, str) or not title.strip():
             return jsonify({"error": "Title must be a non-empty string"}), 400
 
@@ -687,7 +688,7 @@ def create_recipy():
         if not all('idProduct' in ingredient and 'quantity' in ingredient for ingredient in ingredients):
             return jsonify({"error": "Cada ingredient debe tener 'idProduct' y 'quantity'."}), 400
         
-        if not isinstance(time_to_prepare, int) or not isinstance(be_public, bool) or not isinstance(made_by, str):
+        if not isinstance(time_to_prepare, str) or not isinstance(be_public, bool) or not isinstance(made_by, str):
             return jsonify({"error": "Faltan datos o el formato no es correcto."}), 400
         
         if not isinstance(categories, list) or not all(isinstance(category, str) for category in categories):
@@ -695,7 +696,7 @@ def create_recipy():
         
         if not isinstance(steps, list) or not all(isinstance(step, str) for step in steps):
             return jsonify({"error": "Steps must be a list of strings"}), 400
-
+        '''
         recipy_ref = db.collection('recipy').document()
 
         recipy_data = {
@@ -711,11 +712,27 @@ def create_recipy():
 
         recipy_ref.set(recipy_data)
 
-        return jsonify({"message": "Receta creada exitosamente.", "recipy": recipy_data}), 201
+        user_ref = db.collection('users').document(made_by)
+        user_doc = user_ref.get()
 
+        if not user_doc.exists:
+            return jsonify({"error": "Usuario no encontrado."}), 404
+        
+        # Actualizar el campo 'recipies' del usuario, añadiendo el nuevo idRecipy
+        user_data = user_doc.to_dict()
+        if 'recipies' in user_data:
+            user_ref.update({
+                'recipies': firestore.ArrayUnion([recipy_ref.id])  # Añadir la receta a la lista
+            })
+        else:
+            user_ref.update({
+                'recipies': [recipy_ref.id]  # Crear el campo si no existe
+            })
+
+        return jsonify({"message": "Receta creada exitosamente y agregada al usuario.", "recipy": recipy_data}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/api/getrecipy/<recipy_id>', methods=['GET'])
 def get_recipy_by_id(recipy_id):
     try:
