@@ -131,7 +131,7 @@ export default function RecipeGenerator() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>🍆 LET'S TRY SOMETHING NEW</h1>
+      <h1 className={styles.title}>🍆 LETS TRY SOMETHING NEW</h1>
       <h2 className={styles.subtitle}>ASK CHEF OPTI</h2>
 
       <div className={styles.inputBox}>
