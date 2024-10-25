@@ -5,18 +5,20 @@ import ButtonGroup from "@/components/ButtonGroup";
 import Fridge from "@/components/Fridge";
 import AddItem from "@/components/AddItem";
 import Freezer from "@/components/Freezer";
+import { useAuth } from "@/hooks/useAuth";
 
 function Pantry() {
   const [selectedTab, setSelectedTab] = useState("FRIDGE");
   const [products, setProducts] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchUserProducts = async () => {
-      const userId = "MtlWXrrdTQhg1Z080JCGAb4Mtfn1";
+      const userUid = user?.id || localStorage.getItem("user_uid");
 
       try {
         const response = await fetch(
-          `http://localhost:5001/api/user/${userId}/get_products`
+          `http://localhost:5001/api/user/${userUid}/get_products`
         );
         const data = await response.json();
 
