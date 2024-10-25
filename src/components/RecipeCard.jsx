@@ -6,17 +6,21 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
 
   const handleLike = () => {
     setLiked(!liked);
-    onLike(recipe.name); 
+    onLike(recipe.title); 
   };
 
   return (
     <div className={styles.recipeCard} onClick={() => onClick(recipe)}>
       <div className={styles.recipeImageContainer}>
-        <img src={recipe.image} alt={recipe.name} className={styles.recipeImage} />
+        <img
+          src={recipe.image || '/Images/icons/OptiChef.png'} // Imagen por defecto
+          alt={recipe.title}
+          className={styles.recipeImage}
+        />
         <button
           className={`${styles.heartButton} ${liked ? styles.liked : ''}`}
           onClick={(e) => {
-            e.stopPropagation(); 
+            e.stopPropagation(); // Evita que el clic en el botón cierre el popup
             handleLike();
           }}
         >
@@ -24,13 +28,15 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
         </button>
       </div>
       <div className={styles.recipeDetails}>
-        <h3 className={styles.recipeTitle}>{recipe.name}</h3>
+        <h3 className={styles.recipeTitle}>{recipe.title}</h3>
         <div className={styles.recipeInfo}>
           <p className={styles.recipeTime}>
-            <img  className={styles.icon} src="/Images/icons/time.png" alt="time" />{recipe.time}
+            <img className={styles.icon} src="/Images/icons/time.png" alt="time" />
+            {recipe.timeToPrepare}
           </p>
           <p className={styles.recipeCategory}>
-          <img  className={styles.icon} src="/Images/icons/utensils.png" alt="category" /> {recipe.category}
+            <img className={styles.icon} src="/Images/icons/utensils.png" alt="category" />
+            {recipe.categories.join(', ')}
           </p>
         </div>
       </div>

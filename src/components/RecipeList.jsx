@@ -13,14 +13,14 @@ export default function RecipeList({ recipes, onLike, onOpenPopup }) {
         </div>
       </div>
       <div className={styles.recipeCards}>
-        {recipes.map((recipe) => (
-          <RecipeCard
-            key={recipe.name}
-            recipe={recipe}
-            onLike={onLike}
-            onClick={onOpenPopup}
-          />
-        ))}
+      {recipes.map((recipe, index) => (
+  <RecipeCard
+    key={`${recipe.idRecipy}-${index}`} // Asegura una clave única
+    recipe={recipe}
+    onLike={onLike}
+    onClick={onOpenPopup}
+  />
+))}
       </div>
     </div>
   );
