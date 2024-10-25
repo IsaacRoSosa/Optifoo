@@ -5,7 +5,7 @@ import Link from 'next/link';
 function HomePage() {
   return (
     <div className={styles.container}>
-                <div className={styles.background}></div>
+      <div className={styles.background}></div>
 
     <div className={styles.content}>
       <h1 className={styles.title}>WELCOME TO <br />OPTIFOOD</h1>

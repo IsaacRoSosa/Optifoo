@@ -1,7 +1,9 @@
+
 'use client';
 import { useState } from 'react';
 import styles from '@/styles/recipeGenerator.module.css';
 import { streamResponseChunks } from '../../../../backend/web/gemini-api';
+import RecipePopup from "@/components/AiPopUp"
 
 function parseGeneratedRecipe(text) {
   function extractSection(text, sectionName) {
@@ -60,6 +62,7 @@ export default function RecipeGenerator() {
   const [error, setError] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -93,11 +96,11 @@ export default function RecipeGenerator() {
 
       const fullGeneratedText = chunks.join(''); 
       setGeneratedContent(fullGeneratedText);
+      
 
       const parsedRecipe = parseGeneratedRecipe(fullGeneratedText);
       setParsedRecipe(parsedRecipe); 
-
-      
+      setShowPopup(true);
 
     } catch (err) {
       setError('Error generating the recipe. Please try again.');
@@ -144,7 +147,7 @@ export default function RecipeGenerator() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>🍆 LET'S TRY SOMETHING NEW</h1>
+      <h1 className={styles.title}>🍆 LET'S TRY SOMETHING NEW 🥦</h1>
       <h2 className={styles.subtitle}>ASK CHEF OPTI</h2>
 
       <div className={styles.inputBox}>
@@ -201,6 +204,10 @@ export default function RecipeGenerator() {
           <h3>Generated Recipe (Parsed):</h3>
           <pre>{JSON.stringify(parsedRecipe, null, 2)}</pre>
         </div>
+      )}
+
+    {showPopup && parsedRecipe && (
+        <RecipePopup recipe={parsedRecipe} onClose={() => setShowPopup(false)} />
       )}
     </div>
   );
