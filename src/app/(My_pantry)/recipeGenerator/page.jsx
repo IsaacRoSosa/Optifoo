@@ -2,16 +2,24 @@
 import { useState } from 'react';
 import styles from '@/styles/recipeGenerator.module.css';
 import { streamResponseChunks } from '../../../../backend/web/gemini-api';
+import AiPopUp from '@/components/AiPopUp';
+import CookingLoader from '@/components/CookingLoader';
+import RecipeContainer from '@/components/RecipeContainer';
 
 export default function RecipeGenerator() {
   const [ingredients, setIngredients] = useState('');
   const [preferences, setPreferences] = useState('');
   const [restrictions, setRestrictions] = useState('');
-  const [generatedContent, setGeneratedContent] = useState('');
+  const [generatedRecipes, setGeneratedRecipes] = useState([]);
   const [parsedRecipe, setParsedRecipe] = useState(null);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const cleanJSON = (text) => {
+    
+    return text.replace(/```json|```|\\n/g, '').trim();
+  };
 
   const handleGenerate = async (requestBody) => {
     try {
@@ -29,15 +37,16 @@ export default function RecipeGenerator() {
 
       let chunks = [];
       for await (let chunk of streamResponseChunks(response)) {
-        chunks.push(chunk); 
+        chunks.push(chunk);
       }
 
-      const fullGeneratedText = chunks.join(''); 
-      setGeneratedContent(fullGeneratedText);
+      const fullGeneratedText = chunks.join('');
+      console.log('Received:', fullGeneratedText);
 
-      console.log(fullGeneratedText)
-      
+      const cleanedText = cleanJSON(fullGeneratedText);
+      const recipe = JSON.parse(cleanedText); // Parseamos el JSON limpio
 
+      setGeneratedRecipes((prev) => [...prev, recipe]);
     } catch (err) {
       setError('Error generating the recipe. Please try again.');
       console.error('Error during recipe generation:', err);
@@ -49,28 +58,31 @@ export default function RecipeGenerator() {
   const generateContent = async () => {
     setLoading(true);
     setError(null);
-    setGeneratedContent(''); 
-    setParsedRecipe(null);  
-    setGeneratedImage(null);
 
     const requestBody = {
-      ingredients: ingredients.split(','), 
-      preferences: preferences.split(','), 
-      restrictions: restrictions.split(','), 
+      ingredients: ingredients.split(',').map((ing) => ing.trim()),
+      preferences: preferences.split(',').map((pref) => pref.trim()),
+      restrictions: restrictions.split(',').map((res) => res.trim()),
     };
 
     try {
-      await Promise.all([
-        handleGenerate(requestBody)
-      ]);
+      await handleGenerate(requestBody);
     } catch (error) {
-      setError('Error generating the recipe or image. Please try again.');
-      console.error('Error during generation:', error);
+      setError('Error generating the recipe. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const onOpenPopup = (recipe) => {
+    setParsedRecipe(recipe);
+    setShowPopup(true);
+  };
+
+  const onClosePopup = () => {
+    setShowPopup(false);
+    setParsedRecipe(null);
+  };
 
   return (
     <div className={styles.container}>
@@ -111,15 +123,20 @@ export default function RecipeGenerator() {
         {loading ? 'Generating...' : 'GENERATE'}
       </button>
 
-      {error && <p className={styles.error}>{error}</p>}  {}
+      {error && <p className={styles.error}>{error}</p>}
 
-      {generatedContent && (
-        <div className={styles.result}>
-          <h3>Generated Recipe (Raw):</h3>
-          <p>{generatedContent}</p>
-        </div>
+      {loading && <CookingLoader />}
+
+      <div className={styles.containerRecip}>
+
+      <RecipeContainer recipes={generatedRecipes} onOpenPopup={onOpenPopup} />
+      </div>
+
+
+
+      {showPopup && parsedRecipe && (
+        <AiPopUp recipe={parsedRecipe} onClose={onClosePopup} />
       )}
-      
     </div>
   );
 }
