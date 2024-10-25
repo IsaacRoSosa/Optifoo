@@ -13,14 +13,14 @@ export default function RecipeCard({ recipe, onLike, onClick }) {
     <div className={styles.recipeCard} onClick={() => onClick(recipe)}>
       <div className={styles.recipeImageContainer}>
         <img
-          src={recipe.imageUrl || '/Images/icons/OptiChef.png'} // Imagen por defecto
+          src={recipe.imageUrl || '/Images/icons/OptiChef.png'} 
           alt={recipe.title}
           className={styles.recipeImage}
         />
         <button
           className={`${styles.heartButton} ${liked ? styles.liked : ''}`}
           onClick={(e) => {
-            e.stopPropagation(); // Evita que el clic en el botón cierre el popup
+            e.stopPropagation(); 
             handleLike();
           }}
         >

@@ -14,6 +14,13 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const showAlert = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError('');
+    }, 3000);
+  };
+
   const handleToggle = () => {
     setIsSignUp(!isSignUp);
   };
@@ -40,11 +47,11 @@ export default function AuthPage() {
       if (response.ok) {
         localStorage.setItem('user_uid', data.user);
       } else {
-        setError(data.error);  
+        showAlert(data.error);
       }
     } catch (error) {
-      setError('Error inesperado al hacer login.');
-      console.error('Error durante el login:', error);
+      showAlert('Error inesperado al hacer login.');
+
     }
 
     setLoading(false);
@@ -73,11 +80,10 @@ export default function AuthPage() {
       if (response.ok) {
         localStorage.setItem('user_uid', data.user);
       } else {
-        setError(data.error);  // Mostrar el error devuelto por el backend
+        showAlert(data.error);
       }
     } catch (error) {
-      setError('Error inesperado al registrar usuario.');
-      console.error('Error durante el registro:', error);
+      showAlert('Error inesperado al hacer signup.');
     }
 
     setLoading(false);  // Finalizar el proceso
@@ -162,6 +168,8 @@ export default function AuthPage() {
 
   return (
     <div className={styles.container}>
+        {error && <div className={styles.alert}>{error}</div>}
+
       <div className={`${styles.card} ${isSignUp ? styles.rotate : ''}`}>
         <div className={styles.cardInner}>
           <div className={styles.cardFront}>
@@ -199,8 +207,20 @@ export default function AuthPage() {
                 </div>
 
                 <button type="button" onClick={handleLogin} className={styles.loginBtn}>Log in</button>
-                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>LoginWithGoogle</button>
-                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>LoginWithGithub</button>
+                <div className={styles.socialLoginContainer}>
+                      <img
+                        src="/Images/icons/google-icon.png"
+                        alt="Google Login"
+                        className={styles.socialIcon}
+                        onClick={handleLoginWithGoogle}
+                      />
+                      <img
+                        src="/Images/icons/github-icon.webp"
+                        alt="GitHub Login"
+                        className={styles.socialIcon}
+                        onClick={handleLoginWithGitHub}
+                      />
+                    </div>
               
               </form>
             </div>
@@ -303,12 +323,24 @@ export default function AuthPage() {
                       className={styles.inputSign}
                     />
                   </div>
-                </div>
+                </div> 
 
                 <button type="button" onClick={handleSignup} className={styles.loginBtn3}>Create Account</button>
 
-                <button type="button" onClick={handleLoginWithGoogle} className={styles.loginBtn3}>SignUpWithGoogle</button>
-                <button type="button" onClick={handleLoginWithGitHub} className={styles.loginBtn3}>SignUpWithGithub</button>
+                <div className={styles.socialLoginContainer}>
+                    <img
+                      src="/Images/icons/google-icon.png"
+                      alt="Google Login"
+                      className={styles.socialIcon}
+                      onClick={handleLoginWithGoogle}
+                    />
+                    <img
+                      src="/Images/icons/github-icon.webp"
+                      alt="GitHub Login"
+                      className={styles.socialIcon}
+                      onClick={handleLoginWithGitHub}
+                    />
+                  </div>
               </form>
             </div>
           </div>

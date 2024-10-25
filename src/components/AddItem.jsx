@@ -30,7 +30,7 @@ function AddItem({ onBackClick }) {
       }
     };
 
-    fetchProducts();
+    fetchProducts(); 
   }, []);
 
   const handleChange = (e) => {
