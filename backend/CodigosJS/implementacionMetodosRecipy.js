@@ -1,4 +1,4 @@
-const createRecipy = async (ingredients, timeToPrepare, bePublic, madeBy) => {
+const createRecipy = async (title, ingredients, timeToPrepare, bePublic, madeBy,categories, steps) => {
     try {
       const response = await fetch('http://localhost:5001/api/addrecipy', {
         method: 'POST',
@@ -6,10 +6,13 @@ const createRecipy = async (ingredients, timeToPrepare, bePublic, madeBy) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          title: title,
           ingredients: ingredients,
           timeToPrepare: timeToPrepare,
           bePublic: bePublic,
-          madeBy: madeBy
+          madeBy: madeBy,
+          categories: categories,
+          steps: steps
         }),
       });
   
