@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/AddItem.module.css";
 import SendImageButton from "./SendImageButton";
+import { useAuth } from "@/hooks/useAuth";
 
 const detectImage = async (imageFile, setResponse) => {
   const url = 'http://localhost:5001/api/detect';
@@ -13,7 +14,7 @@ const detectImage = async (imageFile, setResponse) => {
 
     if (response.ok) {
       console.log('Server response:', data);
-      setResponse(data); // Actualiza el estado con la respuesta de la API
+      setResponse(data);
     } else {
       console.error(`Request error: ${response.status} - ${data.error}`);
     }
@@ -33,7 +34,7 @@ const extractTextFromImage = async (imageFile, setResponse) => {
 
     if (response.ok) {
       console.log('Server response:', data);
-      setResponse(data); // Actualiza el estado con la respuesta de la API
+      setResponse(data);
     } else {
       console.error(`Request error: ${response.status} - ${data.error}`);
     }
@@ -41,8 +42,6 @@ const extractTextFromImage = async (imageFile, setResponse) => {
     console.error('Error sending request:', error);
   }
 };
-
-import { useAuth } from "@/hooks/useAuth";
 
 function AddItem({ onBackClick }) {
   const { user } = useAuth();
